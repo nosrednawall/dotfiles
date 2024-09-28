@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export THEME_MODE="Gruvbox"
+export COLOR_MODE="Dark"
+# Vou testar alterar os arquivos ini antes
+# export GTK_THEME="NumixSolarizedDarkCyan"
+# export GTK_ICON_THEME="Gruvbox-Material-Dark"

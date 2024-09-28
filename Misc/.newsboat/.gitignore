@@ -1,0 +1,5 @@
+*cache.db
+*.db
+*.swp
+*#
+*cache.db.lock

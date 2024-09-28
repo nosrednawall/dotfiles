@@ -1,0 +1,14 @@
+#!/bin/sh
+
+export PATH=/usr/local/bin:/usr/bin:/bin
+
+export PATH="$HOME/.config/emacs/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin/dmenu:$PATH"
+export PATH="$HOME/.local/bin/dwm:$PATH"
+export PATH="$HOME/.local/bin/mpd:$PATH"
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/games:$PATH"
+
+# Funcoes diversas
+unset MAILCHECK

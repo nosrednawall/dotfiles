@@ -1,0 +1,40 @@
+#!/bin/bash
+
+casa_ligar="Casa Ligar"
+casa_desligar="Casa Desligar"
+ligar_home_lab="HomeLab Ligar"
+
+universidade_ligar="Universidade Ligar"
+universidade_desligar="Universidade Desligar"
+
+# Variable passed to dmenu
+options="$casa_ligar\n$casa_desligar\n$universidade_ligar\n$universidade_desligar\n$ligar_home_lab"
+
+chosen="$(echo -e "$options" | dmenu -p "Liga e desliga VPN " )"
+case $chosen in
+    $casa_ligar)
+         SUDO_ASKPASS=/usr/bin/ssh-askpass sudo wg-quick up wg0
+         notify-send -t 3000 "VPN" "VPN Ligada" --icon="/usr/share/icons/ePapirus/16x16/devices/network-vpn.svg"
+         kill -46 $(pidof dwmblocks)
+    ;;
+    $casa_desligar)
+         SUDO_ASKPASS=/usr/bin/ssh-askpass sudo wg-quick down wg0
+         notify-send -t 3000 "VPN" "VPN Desligada" --icon="/usr/share/icons/ePapirus/16x16/devices/network-vpn.svg"
+         kill -46 $(pidof dwmblocks)
+    ;;
+    $universidade_ligar)
+         SUDO_ASKPASS=/usr/bin/ssh-askpass sudo wg-quick up wg1
+         notify-send -t 3000 "VPN" "VPN Ligada" --icon="/usr/share/icons/ePapirus/16x16/devices/network-vpn.svg"
+         kill -46 $(pidof dwmblocks)
+    ;;
+    $universidade_desligar)
+         SUDO_ASKPASS=/usr/bin/ssh-askpass sudo wg-quick down wg1
+         notify-send -t 3000 "VPN" "VPN Desligada" --icon="/usr/share/icons/ePapirus/16x16/devices/network-vpn.svg"
+         kill -46 $(pidof dwmblocks)
+    ;;
+    $ligar_home_lab)
+         ssh umbrel@192.168.42.152 "/usr/local/bin/wake.sh"
+       #  wakeonlan 40:8d:5c:4b:61:7a
+         notify-send -t 3000 "Wake-on-Lan Home Lab" "Enviado sinal para ligar servidor"
+    ;;
+esac
