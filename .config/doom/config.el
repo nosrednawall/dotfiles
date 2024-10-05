@@ -38,7 +38,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-solarized-dark)
+(setq doom-theme 'doom-nord)
 
 (setq fancy-splash-image
       (concat doom-user-dir "doom-banners/splashes/doom/doom-emacs-color2.png"))
@@ -100,3 +100,9 @@
                 (term-send-raw-string "\C-k")
                 (kill-line))))
 (add-hook 'term-mode-hook 'my-term-mode-hook)
+
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
