@@ -19,7 +19,10 @@ is_running() {
 }
 
 # Inicia o mate-power-manager se não estiver rodando
-is_running "xfce4-power-manager" || xfce4-power-manager &
+#is_running "xfce4-power-manager" || xfce4-power-manager &
+
+# Inicia o mate-power-manager se não estiver rodando
+is_running "lxpolkit" || lxpolkit &
 
 # Inicia o xautolock com as configurações personalizadas se não estiver rodando
 is_running "xautolock" || xautolock -time 15 -locker ~/.local/bin/dwm/slock_personalizado -detectsleep &
@@ -42,7 +45,7 @@ is_running "emacs --daemon" || emacs --daemon &
 is_running "solaar" || /usr/bin/solaar -w hide
 
 # Desabilita o aplicativo de notificacao do xfce4
-systemctl --user stop xfce4-notifyd
+# systemctl --user stop xfce4-notifyd
 
 # Nem sei se preciso disso instalando o xfce primeiro
 # is_running "polkit-gnome-authentication-agent-1" || /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
