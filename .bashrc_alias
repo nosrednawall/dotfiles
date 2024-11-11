@@ -37,3 +37,4 @@ alias betterdiscord-update="DISC_CONFIG=\"\$HOME/.var/app/com.discordapp.Discord
 #alias htop="btop"
 alias EDITOR="emacsclient -c -a 'emacs'"
 alias mov-cli-activate="source ~/.venv/mov-cli-venv/bin/activate"
+alias aquario="/usr/local/bin/asciiquarium"
