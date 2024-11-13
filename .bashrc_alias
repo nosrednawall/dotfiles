@@ -38,3 +38,4 @@ alias betterdiscord-update="DISC_CONFIG=\"\$HOME/.var/app/com.discordapp.Discord
 alias EDITOR="emacsclient -c -a 'emacs'"
 alias mov-cli-activate="source ~/.venv/mov-cli-venv/bin/activate"
 alias aquario="/usr/local/bin/asciiquarium"
+alias live_wallpaper="xwinwrap -g 1920x1080 -ov -debug -- mpv --no-audio --loop --no-border -wid WID --panscan=1 --geometry=100%:100% '.wallpapers/live-wallpaper/initiald/toyota-ae86-drifting-initial-d-moewalls-com.mp4'"
