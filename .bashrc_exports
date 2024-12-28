@@ -1,14 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
-export PATH=/usr/local/bin:/usr/bin:/bin
+# Adiciona diretórios personalizados ao PATH
+export PATH="$HOME/.config/emacs/bin:$HOME/.local/bin"
+export PATH="$HOME/.config/suckless/scripts/dmenu:$HOME/.config/suckless/scripts/dwm:$HOME/.config/suckless/scripts/dwmblocks:$PATH"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/games:$PATH"
 
-export PATH="$HOME/.config/emacs/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.local/bin/dmenu:$PATH"
-export PATH="$HOME/.local/bin/dwm:$PATH"
+# Inclui diretórios adicionais (se necessário)
 export PATH="$HOME/.local/bin/mpd:$PATH"
-export PATH="/usr/local/bin:$PATH"
-export PATH="/usr/games:$PATH"
 
 # Funcoes diversas
 unset MAILCHECK
