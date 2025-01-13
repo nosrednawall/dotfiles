@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Adiciona diretórios personalizados ao PATH
+export PATH="$HOME/.config/emacs/bin:$HOME/.local/bin"
+export PATH="$HOME/.config/suckless/scripts/dmenu:$HOME/.config/suckless/scripts/dwm:$HOME/.config/suckless/scripts/dwmblocks:$PATH"
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/games:$PATH"
+
+# Inclui diretórios adicionais (se necessário)
+export PATH="$HOME/.local/bin/mpd:$PATH"
+
+# Funcoes diversas
+unset MAILCHECK

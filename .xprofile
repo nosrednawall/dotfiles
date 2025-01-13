@@ -1,0 +1,13 @@
+#!/bin/bash
+export PATH=/usr/local/bin:/usr/bin:/bin
+
+export PATH="$HOME/.config/emacs/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.config/suckless/scripts/dmenu:$PATH"
+export PATH="$HOME/.config/suckless/scripts/dwm:$PATH"
+export PATH="$HOME/.config/suckless/scripts/dwmblocks:$PATH"
+export PATH="$HOME/.local/bin/mpd:$PATH"
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/games:$PATH"
+
+export QT_QPA_PLATFORMTHEME=qt5ct

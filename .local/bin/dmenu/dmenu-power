@@ -1,0 +1,29 @@
+#!/bin/bash
+
+shutdown=" Shutdown"
+reboot=" Reboot"
+logout=" Logout"
+suspend="Suspend"
+hibernate="Hibernate"
+
+# Variable passed to rofi
+options="$shutdown\n$reboot\n$logout\n$suspend\n$hibernate"
+
+chosen="$(echo -e "$options" | dmenu -p "Power-Menu " )"
+case $chosen in
+    $shutdown)
+	SUDO_ASKPASS=/usr/bin/ssh-askpass sudo -A systemctl poweroff
+	;;
+    $reboot)
+	SUDO_ASKPASS=/usr/bin/ssh-askpass sudo -A systemctl reboot
+	;;
+    $logout)
+	SUDO_ASKPASS=/usr/bin/ssh-askpass sudo -A pkill -KILL -u $USER
+	;;
+    $suspend)
+	SUDO_ASKPASS=/usr/bin/ssh-askpass sudo -A systemctl suspend
+	;;
+    $hibernate)
+	SUDO_ASKPASS=/usr/bin/ssh-askpass sudo -A systemctl hibernate
+	;;
+esac

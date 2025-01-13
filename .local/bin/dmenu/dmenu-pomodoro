@@ -1,0 +1,21 @@
+#!/bin/bash
+
+start=" Iniciar"
+cancel=" Cancelar"
+break="Fazer uma Pausa"
+clear="Limpar o pomodoro atual"
+finish="Finalizar"
+repeat="Repete o último pomodoro"
+
+# Variable passed to dmenu
+options="$start\n$finish"
+
+chosen="$(echo -e "$options" | dmenu -p "Comandos pomodoro" )"
+case $chosen in
+	 $start)
+		 /home/anderson/.local/bin/pomodoro start
+	 ;;
+	 $finish)
+		 /home/anderson/.local/bin/pomodoro finish
+	 ;;
+esac

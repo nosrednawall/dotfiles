@@ -1,0 +1,30 @@
+#!/bin/bash
+
+ligar="Docker Ligar"
+desligar="Docker Desligar"
+reiniciar="Docker Reiniciar"
+
+# Variable passed to dmenu
+options="$ligar\n$desligar\n$reiniciar"
+
+chosen="$(echo -e "$options" | dmenu -p "Liga e desliga Docker " )"
+case $chosen in
+    $ligar)
+         SUDO_ASKPASS=/usr/bin/ssh-askpass sudo systemctl start docker.service
+         SUDO_ASKPASS=/usr/bin/ssh-askpass sudo systemctl start containerd.service
+         notify-send -t 3000 "Docker" "Docker Ligado" --icon="/usr/share/icons/ePapirus/16x16/actions/code-block.svg"
+         # kill -46 $(pidof dwmblocks)
+    ;;
+    $desligar)
+         SUDO_ASKPASS=/usr/bin/ssh-askpass sudo systemctl stop docker.service
+         SUDO_ASKPASS=/usr/bin/ssh-askpass sudo systemctl stop containerd.service
+         notify-send -t 3000 "Docker" "Docker Desligado" --icon="/usr/share/icons/ePapirus/16x16/actions/code-block.svg"
+         # kill -46 $(pidof dwmblocks)
+    ;;
+    $reiniciar)
+         SUDO_ASKPASS=/usr/bin/ssh-askpass sudo systemctl restart docker.service
+         SUDO_ASKPASS=/usr/bin/ssh-askpass sudo systemctl restart containerd.service
+         notify-send -t 3000 "Docker" "Docker Reiniciado" --icon="/usr/share/icons/ePapirus/16x16/actions/code-block.svg"
+         # kill -46 $(pidof dwmblocks)
+    ;;
+esac
