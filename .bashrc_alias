@@ -1,0 +1,41 @@
+#!/bin/sh
+
+# Complementos
+
+
+# alias dwm
+alias compila="rm config.h; make; sudo make clean install"
+alias edwm="cd /home/anderson/.dotfiles/.config/suckless/dwm"
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias install='sudo apt install'
+alias update='sudo apt update'
+alias upgrade='sudo apt upgrade'
+alias uplist='apt list --upgradable'
+alias search='apt search'
+alias remove='sudo apt autoremove'
+#alias l='exa -ll --color=always --group-directories-first'
+#alias ls='exa -al --header --icons --group-directories-first'
+alias df='df -h'
+alias free='free -h'
+alias myip="ip -f inet address | grep inet | grep -v 'lo$' | cut -d ' ' -f 6,13 && curl ifconfig.me && echo ' external ip'"
+alias x="exit"
+alias copia_site="wget -r -erobots=off"
+
+# Git aliases
+alias gp="git push -u origin main"
+alias gsave="git commit -m 'save'"
+alias gs="git status"
+alias gc="git clone"
+#alias tr="tree"
+
+# Programas
+alias em="emacs -nw"
+alias nvidia="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia"
+alias betterdiscord-update="DISC_CONFIG=\"\$HOME/.var/app/com.discordapp.Discord/config/discord\" && BD_ASAR=betterdiscord.asar && wget --timestamping -P \"\${DISC_CONFIG}/../BetterDiscord/data\" -- \"https://github.com/BetterDiscord/BetterDiscord/releases/latest/download/\${BD_ASAR}\" && DISC_VER=\"\$(ls --sort=time --time=creation \"\${DISC_CONFIG}\" | grep -E -m 1 '^[0-9]+\\.[0-9]+\\.[0-9]+\$')\" && echo -e \"require('../../../../BetterDiscord/data/\${BD_ASAR}');\\nmodule.exports = require('./core.asar');\" | tee \"\${DISC_CONFIG}/\${DISC_VER}/modules/discord_desktop_core/index.js\" && echo -e \"\\nBetterDiscord installed. Restart Discord if currently running.\" || echo -e \"\\nInstallation failed.\""
+#alias htop="btop"
+alias EDITOR="emacsclient -c -a 'emacs'"
+alias mov-cli-activate="source ~/.venv/mov-cli-venv/bin/activate"
+alias aquario="/usr/local/bin/asciiquarium"
+alias live_wallpaper="xwinwrap -g 1920x1080 -ov -debug -- mpv --no-audio --loop --no-border -wid WID --panscan=1 --geometry=100%:100% '.wallpapers/live-wallpaper/initiald/toyota-ae86-drifting-initial-d-moewalls-com.mp4'"

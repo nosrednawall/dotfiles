@@ -1,0 +1,80 @@
+#+TITLE: All the splash images
+
+This is a selection of images and banners that are used as splash images and
+icons in the emacs and doom community. This is a place to aggregate and share them.
+
+* Using the Icons
+You can download individual images or clone the repo.
+You can set the icons by adding this line to your ~config.el~ in [[https://github.com/hlissner/doom-emacs][doom emacs]]
+
+#+begin_src emacs-lisp
+(setq fancy-splash-image "/path/to/image")
+#+end_src
+
+* Contributing
+Feel free to make pull requests to add your images! Just keep in mind...
+
++ That if these images are not made by you then you need to add the name of the
+  artist and the license that it is using for distribution. It preferably needs
+  to be a [[https://creativecommons.org/licenses/by-sa/4.0/][Creative Commons]] but as long as its permissive it should be fine.
+  *If it does not meet this step I can't merge it*.
+
++ Large images can dominate and hurt the usability of the dashboard. I recommend
+  =400x400= for 1080p screens but I am a sample size of one. It may be beneficial
+  for you to resize the image.
+  If you have image magic installed this command will resize the image to 400x400:
+ #+begin_src shell
+ convert INPUT.png -resize 400 -quality 75 OUTPUT.png
+ #+end_src 
+
+* Credits
+
++ Thanks to [[https://github.com/d12frosted/homebrew-emacs-plus/][emacs-plus]] for quite a few of these images
+
+** Splash images
+*** doom
+| Author          | Image                                          | URL    |
+|-----------------+------------------------------------------------+--------|
+| [[https://github.com/zzamboni][zzamboni]]        | [[./splashes/doom/doom-emacs-color.png]]           | [[https://gitlab.com/zzamboni/dot-doom/-/tree/master/splash][→ Link]] |
+| [[https://github.com/zzamboni][zzamboni]]        | [[./splashes/doom/doom-emacs-color2.png]]          | [[https://gitlab.com/zzamboni/dot-doom/-/tree/master/splash][→ Link]] |
+| [[https://github.com/zzamboni][zzamboni]]        | [[./splashes/doom/doom-emacs-color2.svg]]          | [[https://gitlab.com/zzamboni/dot-doom/-/tree/master/splash][→ Link]] |
+| [[https://github.com/zzamboni][zzamboni]]        | [[./splashes/doom/doom-emacs-bw-light.svg]]        | [[https://gitlab.com/zzamboni/dot-doom/-/tree/master/splash][→ Link]] |
+| [[https://github.com/zzamboni][zzamboni]]        | [[./splashes/doom/doom-emacs-bw-dark.svg]]         | [[https://gitlab.com/zzamboni/dot-doom/-/tree/master/splash][→ Link]] |
+| [[https://imalightbulb.xyz/][I'm a lightbulb]] | [[./splashes/doom/I-am-doom.png]]                  |        |
+| anonymous       | [[./splashes/doom/doomguy.png]]                    |        |
+| [[https://github.com/eccentric-j][eccentric-j]]     | [[./splashes/doom/cute-demon.png]]                 | [[https://github.com/eccentric-j/doom-icon][→ Link]] |
+| [[https://github.com/hugonobrega][hugonobrega]]     | [[./splashes/doom/doom-emacs-slant-out-color.png]] |        |
+| [[https://github.com/hugonobrega][hugonobrega]]     | [[./splashes/doom/doom-emacs-slant-out-bw.png]]    |        |
+| [[https://github.com/ocodo][ocodo]]           | [[./splashes/doom/doom-creamsody.png]]             |        |
+| [[https://github.com/ocodo][ocodo]]           | [[./splashes/doom/doom-vapourwave.png]]            |        |
+| [[https://github.com/typoman][typoman]]         | [[./splashes/doom/doom-ascii-art.png]]             |        |
+
+*** emacs
+| Author           | Image                               | URL    |
+|------------------+-------------------------------------+--------|
+| Unknown          | [[./splashes/emacs/emacs-sink.png]]     | [[https://www.teuton.org/~ejm/emacsicon/][→ Link]] |
+| → Luis Fernandes | [[./splashes/emacs/emacs-gnu-logo.png]] | [[https://www.ee.ryerson.ca/~elf/emacs/logo/index.html][→ Link]] |
+| → Nicolas Petton | [[./splashes/emacs/emacs-e-logo.png]]   | [[https://git.savannah.gnu.org/cgit/emacs.git/tree/etc/images/icons][→ Link]] |
+| [[https://github.com/abrahamparayil][abrahamparayil]]   | [[./splashes/emacs/M-x_butterfly.png][./splashes/emacs/M-x_butterfly.png]]  |        |
+
+*** gnu
+
+| Author                        | Image                              | URL    |
+|-------------------------------+------------------------------------+--------|
+| [[https://github.com/aurium][→ Aurélio A. Heckert]]          | [[./splashes/gnu/gnu-head.png]]        | [[https://www.gnu.org/graphics/heckert_gnu.html][→ Link]] |
+| [[http://fsf.org][Free Software Foundation, Inc]] | [[./splashes/gnu/trancendent-gnu.png]] | [[https://www.gnu.org/graphics/meditate.html][→ Link]] |
+| [[https://en.wikipedia.org/wiki/David_Vignoni][David Vignoni]]                 | [[./splashes/gnu/nuvola_emacs.png]]    | [[https://commons.wikimedia.org/wiki/File:Nuvola_apps_emacs_vector.svg][→ Link]] |
+
+*** others
+
+| Author | Image                                | URL    |
+|--------+--------------------------------------+--------|
+| [[https://github.com/valrus][Valrus]] | [[./splashes/others/lion-head.png]]      | [[https://github.com/valrus/doom-private-module/blob/master/splash-images/lion-head.png][→ Link]] |
+| [[https://github.com/eutro][eutro]]  | [[./splashes/others/emacs-logo-vim.png][./splashes/others/emacs-logo-vim.png]] | [[https://github.com/mkrl/misbrands/pull/20#issuecomment-1001027050][→ Link]] |
+
+** Icons
+*** emacs
+| Author          | Image                                      | URL    |
+|-----------------+--------------------------------------------+--------|
+| [[https://github.com/jasonm23][→ ocodo]]         | [[./icons/emacs/emacs-modern.png]]             | [[https://github.com/emacsfodder/emacs-icons-project][→ Link]] |
+| [[https://darrinhenein.com/][→ Darrin Henein]] | [[./icons/emacs/emacs-curvy/emacs-curvy.icns]] | [[https://darrinhenein.com/2021/Emacs-Icon][→ Link]] |

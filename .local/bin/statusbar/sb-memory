@@ -1,0 +1,10 @@
+#!/bin/sh
+# Display RAM usage.
+
+case "$BLOCK_BUTTON" in
+    6) terminal -e "$EDITOR" "$0" ;;
+esac
+
+memory=$(free | grep Mem | awk '{print $3/$2 * 100.0}')
+
+echo " $(printf "%.2f" "$memory")  "

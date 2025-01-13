@@ -1,0 +1,17 @@
+#!/bin/sh
+
+cd "$HOME/Músicas/"
+
+MUSIC_FILE="$(find -type f -not -path '*/.*' | sort \
+                                             | dmenu -l 8 -p 'Music:')"
+[ -z "$MUSIC_FILE" ] && exit
+
+#MUSIC_PLAYER="st -e mpv"
+
+MUSIC_PLAYER="$(echo -e "ffplay\nmpv"     | dmenu)"
+
+[ -z "$MUSIC_PLAYER" ] && exit
+
+
+
+$MUSIC_PLAYER "$MUSIC_FILE" &

@@ -1,0 +1,8 @@
+sudo apt install accountsservice
+
+# arquivos dos temas configurados no greeter
+sudo cp -r "Capitaine Cursors (Gruvbox) - White/" /usr/share/icons/
+sudo cp -r Gruvbox-Material-Dark/ /usr/share/icons/
+sudo cp -r Gruvbox-Material-Dark/ /usr/share/themes/
+sudo cp -r .wallpapers/debian_grey_swirl.png /usr/share/images/desktop-base/
+

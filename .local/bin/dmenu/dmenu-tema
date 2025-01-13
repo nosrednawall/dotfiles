@@ -1,0 +1,499 @@
+#!/bin/bash
+
+solarized_dark="  Solarized Dark"
+solarized_light="  Solarized Light"
+gruvbox_dark="  Gruvbox Dark"
+gruvbox_light="  Gruvbox Light"
+catppuccin_dark="  Catppuccin Dark"
+catppuccin_light="  Catppuccin Light"
+nordic_dark="  Nord Dark"
+nordic_light="  Nord Light"
+dracula_dark="  Dracula Dark"
+dracula_light="  Dracula Light"
+vaporwave_dark="  Vaporwave Dark"
+vaporwave_light="  Vaporwave Light"
+
+# Variable passed to dmenu
+options="Dark :\n$catppuccin_dark\n$dracula_dark\n$gruvbox_dark\n$nordic_dark\n$solarized_dark\n$vaporwave_dark\nLight :\n$catppuccin_light\n$dracula_light\n$gruvbox_light\n$nordic_light\n$solarized_light\n$vaporwave_light"
+
+chosen="$(echo -e "$options" | dmenu -p "Tema menu " )"
+case $chosen in
+    $solarized_dark)
+    # Arquivo variavel
+    	sed -i 's|^export THEME_MODE=.*|export THEME_MODE="Solarized"|' ~/.theme_selected
+        sed -i 's|^export COLOR_MODE=.*|export COLOR_MODE="Dark"|' ~/.theme_selected
+
+    # Altero as configuracoes do gtk
+        # GTK2
+        sed -i 's/^gtk-icon-theme-name =.*/gtk-icon-theme-name = "Numix-Circle"/' ~/.config/gtk-2.0/gtkrc
+        sed -i 's/^gtk-theme-name =.*/gtk-theme-name = "NumixSolarizedDarkCyan"/' ~/.config/gtk-2.0/gtkrc
+
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name="Numix-Circle"/' ~/.gtkrc-2.0
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name="NumixSolarizedDarkCyan"/' ~/.gtkrc-2.0
+
+        # GTK3
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name=NumixSolarizedDarkCyan/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name= Numix-Circle/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=1/' ~/.config/gtk-3.0/settings.ini
+
+        #Flatpak
+        SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=NumixSolarizedDarkCyan
+
+
+    # Suckless
+        sed -i 's|^#include "themes/.*|#include "themes/solarized_dark.h"|' ~/.config/suckless/dwm/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/solarized_dark.h"|' ~/.config/suckless/st/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/solarized_dark.h"|' ~/.config/suckless/dmenu/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/solarized_dark.h"|' ~/.config/suckless/slock/config.def.h
+
+    # Emacs Doom
+        sed -i 's|(setq doom-theme .*)|(setq doom-theme '"'"'doom-solarized-dark)|' ~/.config/doom/config.el
+
+    # Btop
+        sed -i 's|^color_theme =.*|color_theme = "solarized_dark"|' ~/.config/btop/btop.conf
+    ;;
+    $solarized_light)
+    # Arquivo variavel
+    	sed -i 's|^export THEME_MODE=.*|export THEME_MODE="Solarized"|' ~/.theme_selected
+        sed -i 's|^export COLOR_MODE=.*|export COLOR_MODE="Light"|' ~/.theme_selected
+
+    # Altero as configuraçoes do gtk
+        # gtk2
+        sed -i 's/^gtk-icon-theme-name =.*/gtk-icon-theme-name = "Numix-Circle-Light"/' ~/.config/gtk-2.0/gtkrc
+        sed -i 's/^gtk-theme-name =.*/gtk-theme-name = "NumixSolarizedLightCyan"/' ~/.config/gtk-2.0/gtkrc
+
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name="Numix-Circle-Light"/' ~/.gtkrc-2.0
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name="NumixSolarizedLightCyan"/' ~/.gtkrc-2.0
+
+
+        # gtk3
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name=NumixSolarizedLightCyan/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name=Numix-Circle-Light/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=0/' ~/.config/gtk-3.0/settings.ini
+
+        #Flatpak
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=NumixSolarizedLightCyan
+
+
+    # Suckless
+        sed -i 's|^#include "themes/.*|#include "themes/solarized_light.h"|' ~/.config/suckless/dwm/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/solarized_light.h"|' ~/.config/suckless/st/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/solarized_light.h"|' ~/.config/suckless/dmenu/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/solarized_light.h"|' ~/.config/suckless/slock/config.def.h
+
+    # Emacs Doom
+        sed -i 's|(setq doom-theme .*)|(setq doom-theme '"'"'doom-solarized-light)|' ~/.config/doom/config.el
+
+    # Btop
+        sed -i 's|^color_theme =.*|color_theme = "solarized_light"|' ~/.config/btop/btop.conf
+	;;
+    $gruvbox_dark)
+    # Arquivo variavel
+    	sed -i 's|^export THEME_MODE=.*|export THEME_MODE="Gruvbox"|' ~/.theme_selected
+        sed -i 's|^export COLOR_MODE=.*|export COLOR_MODE="Dark"|' ~/.theme_selected
+
+    # Altero as configuracoes do gtk
+        # gtk2
+        sed -i 's/^gtk-icon-theme-name =.*/gtk-icon-theme-name = "Numix-Circle"/' ~/.config/gtk-2.0/gtkrc
+        sed -i 's/^gtk-theme-name =.*/gtk-theme-name = "Gruvbox-Material-Dark"/' ~/.config/gtk-2.0/gtkrc
+
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name="Numix-Circle"/' ~/.gtkrc-2.0
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name="Gruvbox-Material-Dark"/' ~/.gtkrc-2.0
+
+        #gtk3
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name=Gruvbox-Material-Dark/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name=Numix-Circle/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=1/' ~/.config/gtk-3.0/settings.ini
+
+        #Flatpak
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Gruvbox-Material-Dark
+
+    # Suckless
+        sed -i 's|^#include "themes/.*|#include "themes/gruvbox_dark.h"|' ~/.config/suckless/dwm/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/gruvbox_dark.h"|' ~/.config/suckless/st/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/gruvbox_dark.h"|' ~/.config/suckless/dmenu/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/gruvbox_dark.h"|' ~/.config/suckless/slock/config.def.h
+
+    # Emacs Doom
+        sed -i 's|(setq doom-theme .*)|(setq doom-theme '"'"'doom-gruvbox)|' ~/.config/doom/config.el
+
+    # Btop
+        sed -i 's|^color_theme =.*|color_theme = "gruvbox_dark"|' ~/.config/btop/btop.conf
+    ;;
+    $gruvbox_light)
+    # Arquivo variavel
+    	sed -i 's|^export THEME_MODE=.*|export THEME_MODE="Gruvbox"|' ~/.theme_selected
+        sed -i 's|^export COLOR_MODE=.*|export COLOR_MODE="Light"|' ~/.theme_selected
+
+    # Altero as configuraçoes do gtk
+        #gtk2
+    	sed -i 's/^gtk-theme-name=.*/gtk-theme-name="Gruvbox-Plus-Light"/' ~/.config/gtk-2.0/gtkrc
+        sed -i 's/^gtk-icon-theme-name =.*/gtk-icon-theme-name = "Numix-Circle-Light"/' ~/.config/gtk-2.0/gtkrc
+
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name="Numix-Circle-Light"/' ~/.gtkrc-2.0
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name="Gruvbox-Plus-Light"/' ~/.gtkrc-2.0
+
+        #gtk3
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name=Gruvbox-Plus-Light/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name=Numix-Circle-Light/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=0/' ~/.config/gtk-3.0/settings.ini
+
+        #Flatpak
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Gruvbox-Plus-Light
+
+    # Suckless
+        sed -i 's|^#include "themes/.*|#include "themes/gruvbox_light.h"|' ~/.config/suckless/dwm/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/gruvbox_light.h"|' ~/.config/suckless/st/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/gruvbox_light.h"|' ~/.config/suckless/dmenu/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/gruvbox_light.h"|' ~/.config/suckless/slock/config.def.h
+
+    # Emacs Doom
+        sed -i 's|(setq doom-theme .*)|(setq doom-theme '"'"'doom-gruvbox-light)|' ~/.config/doom/config.el
+
+    # Btop
+        sed -i 's|^color_theme =.*|color_theme = "gruvbox_light"|' ~/.config/btop/btop.conf
+    ;;
+    $catppuccin_dark)
+    # Arquivo variavel
+    	sed -i 's|^export THEME_MODE=.*|export THEME_MODE="Catppuccin"|' ~/.theme_selected
+        sed -i 's|^export COLOR_MODE=.*|export COLOR_MODE="Dark"|' ~/.theme_selected
+
+    # Altero as configuracoes do gtk
+        #gtk2
+    	sed -i 's/^gtk-theme-name=.*/gtk-theme-name="Catppuccin-Frappe-Standard-Pink-Dark"/' ~/.config/gtk-2.0/gtkrc
+        sed -i 's/^gtk-icon-theme-name =.*/gtk-icon-theme-name = "Numix-Circle"/' ~/.config/gtk-2.0/gtkrc
+
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name="Numix-Circle"/' ~/.gtkrc-2.0
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name="Catppuccin-Frappe-Standard-Pink-Dark"/' ~/.gtkrc-2.0
+
+        #gtk3
+    	sed -i 's/^gtk-theme-name=.*/gtk-theme-name=Catppuccin-Frappe-Standard-Pink-Dark/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name= Numix-Circle/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=1/' ~/.config/gtk-3.0/settings.ini
+
+        #Flatpak
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Catppuccin-Frappe-Standard-Pink-Dark
+
+    # Suckless
+        sed -i 's|^#include "themes/.*|#include "themes/catppuccin_frappe.h"|' ~/.config/suckless/dwm/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/catppuccin_frappe.h"|' ~/.config/suckless/st/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/catppuccin_frappe.h"|' ~/.config/suckless/dmenu/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/catppuccin_frappe.h"|' ~/.config/suckless/slock/config.def.h
+
+    # Emacs Doom
+        # sed -i 's|(setq doom-theme .*)|(setq doom-theme '"'"'rebecca)|' ~/.config/doom/config.el
+        sed -i 's|(setq doom-theme .*)|(setq doom-theme '"'"'catppuccin) (setq catppuccin-flavor '"'"'frappe)|' ~/.config/doom/config.el
+
+    # Btop
+        sed -i 's|^color_theme =.*|color_theme = "catppuccin_frappe"|' ~/.config/btop/btop.conf
+    ;;
+    $catppuccin_light)
+    # Arquivo variavel
+    	sed -i 's|^export THEME_MODE=.*|export THEME_MODE="Catppuccin"|' ~/.theme_selected
+        sed -i 's|^export COLOR_MODE=.*|export COLOR_MODE="Light"|' ~/.theme_selected
+
+    # Altero as configuracoes do gtk
+        # GTK2
+        sed -i 's/^gtk-icon-theme-name =.*/gtk-icon-theme-name = "Numix-Circle-Light"/' ~/.config/gtk-2.0/gtkrc
+        sed -i 's/^gtk-theme-name =.*/gtk-theme-name = "Catppuccin-Latte-Standard-Sapphire-Light"/' ~/.config/gtk-2.0/gtkrc
+
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name="Numix-Circle-Light"/' ~/.gtkrc-2.0
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name="Catppuccin-Latte-Standard-Sapphire-Light"/' ~/.gtkrc-2.0
+
+        # GTK3
+    	sed -i 's|^gtk-theme-name=.*/gtk-theme-name=Catppuccin-Latte-Standard-Sapphire-Light|' ~/.config/gtk-3.0/settings.ini
+        sed -i 's|^gtk-icon-theme-name=.*/gtk-icon-theme-name= Numix-Circle-Light|' ~/.config/gtk-3.0/settings.ini
+        sed -i 's|^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=0|' ~/.config/gtk-3.0/settings.ini
+
+        #Flatpak
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Catppuccin-Latte-Standard-Sapphire-Light
+
+    # Suckless
+        sed -i 's|^#include "themes/.*|#include "themes/catppuccin_latte.h"|' ~/.config/suckless/dwm/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/catppuccin_latte.h"|' ~/.config/suckless/st/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/catppuccin_latte.h"|' ~/.config/suckless/dmenu/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/catppuccin_latte.h"|' ~/.config/suckless/slock/config.def.h
+
+    # Emacs Doom
+        sed -i 's|(setq doom-theme .*)|(setq doom-theme '"'"'catppuccin) (setq catppuccin-flavor '"'"'latte)|' ~/.config/doom/config.el
+
+    # Btop
+        sed -i 's|^color_theme =.*|color_theme = "catppuccin_latte"|' ~/.config/btop/btop.conf
+    ;;
+
+    $nordic_dark)
+    # Arquivo variavel
+    	sed -i 's|^export THEME_MODE=.*|export THEME_MODE="Nord"|' ~/.theme_selected
+        sed -i 's|^export COLOR_MODE=.*|export COLOR_MODE="Dark"|' ~/.theme_selected
+
+    # Altero as configuracoes do gtk
+        # GTK2
+        sed -i 's/^gtk-icon-theme-name =.*/gtk-icon-theme-name = "Numix-Circle"/' ~/.config/gtk-2.0/gtkrc
+        sed -i 's/^gtk-theme-name =.*/gtk-theme-name = "Nordic-darker-v40"/' ~/.config/gtk-2.0/gtkrc
+
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name="Numix-Circle"/' ~/.gtkrc-2.0
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name="Nordic-darker-v40"/' ~/.gtkrc-2.0
+
+        # GTK3
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name=Nordic-darker-v40/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name= Numix-Circle/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=1/' ~/.config/gtk-3.0/settings.ini
+
+
+        #Flatpak
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Nordic-darker-v40
+
+    # Suckless
+        sed -i 's|^#include "themes/.*|#include "themes/nord_dark.h"|' ~/.config/suckless/dwm/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/nord_dark.h"|' ~/.config/suckless/st/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/nord_dark.h"|' ~/.config/suckless/dmenu/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/nord_dark.h"|' ~/.config/suckless/slock/config.def.h
+
+    # Emacs Doom
+        sed -i 's|(setq doom-theme .*)|(setq doom-theme '"'"'doom-nord)|' ~/.config/doom/config.el
+
+    # Btop
+        sed -i 's|^color_theme =.*|color_theme = "nord"|' ~/.config/btop/btop.conf
+    ;;
+    $nordic_light)
+    # Arquivo variavel
+    	sed -i 's|^export THEME_MODE=.*|export THEME_MODE="Nord"|' ~/.theme_selected
+        sed -i 's|^export COLOR_MODE=.*|export COLOR_MODE="Light"|' ~/.theme_selected
+
+    # Altero as configuraçoes do gtk
+        # gtk2
+        sed -i 's/^gtk-icon-theme-name =.*/gtk-icon-theme-name = "Numix-Circle-Light"/' ~/.config/gtk-2.0/gtkrc
+        sed -i 's/^gtk-theme-name =.*/gtk-theme-name = "Nordic-Polar-v40"/' ~/.config/gtk-2.0/gtkrc
+
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name="Numix-Circle-Light"/' ~/.gtkrc-2.0
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name="Nordic-Polar-v40"/' ~/.gtkrc-2.0
+
+        # gtk3
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name=Nordic-Polar-v40/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name=Numix-Circle-Light/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=0/' ~/.config/gtk-3.0/settings.ini
+
+        #Flatpak
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Nordic-Polar-v40
+
+    # Suckless
+        sed -i 's|^#include "themes/.*|#include "themes/nord_light.h"|' ~/.config/suckless/dwm/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/nord_light.h"|' ~/.config/suckless/st/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/nord_light.h"|' ~/.config/suckless/dmenu/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/nord_light.h"|' ~/.config/suckless/slock/config.def.h
+
+    # Emacs Doom
+        sed -i 's|(setq doom-theme .*)|(setq doom-theme '"'"'doom-nord-light)|' ~/.config/doom/config.el
+
+    # Btop
+        sed -i 's|^color_theme =.*|color_theme = "nord-light"|' ~/.config/btop/btop.conf
+	;;
+
+    $dracula_dark)
+    # Arquivo variavel
+    	sed -i 's|^export THEME_MODE=.*|export THEME_MODE="Dracula"|' ~/.theme_selected
+        sed -i 's|^export COLOR_MODE=.*|export COLOR_MODE="Dark"|' ~/.theme_selected
+
+    # Altero as configuracoes do gtk
+        # GTK2
+        sed -i 's/^gtk-icon-theme-name =.*/gtk-icon-theme-name = "Numix-Circle"/' ~/.config/gtk-2.0/gtkrc
+        sed -i 's/^gtk-theme-name =.*/gtk-theme-name = "Dracula"/' ~/.config/gtk-2.0/gtkrc
+
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name="Numix-Circle"/' ~/.gtkrc-2.0
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name="Dracula"/' ~/.gtkrc-2.0
+
+        # GTK3
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name=Dracula/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name= Numix-Circle/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=1/' ~/.config/gtk-3.0/settings.ini
+
+        #Flatpak
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Dracula
+
+    # Suckless
+        sed -i 's|^#include "themes/.*|#include "themes/dracula_dark.h"|' ~/.config/suckless/dwm/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/dracula_dark.h"|' ~/.config/suckless/st/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/dracula_dark.h"|' ~/.config/suckless/dmenu/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/dracula_dark.h"|' ~/.config/suckless/slock/config.def.h
+
+    # Emacs Doom
+        sed -i 's|(setq doom-theme .*)|(setq doom-theme '"'"'doom-dracula)|' ~/.config/doom/config.el
+
+    # Btop
+        sed -i 's|^color_theme =.*|color_theme = "dracula"|' ~/.config/btop/btop.conf
+    ;;
+    $dracula_light)
+    # Arquivo variavel
+    	sed -i 's|^export THEME_MODE=.*|export THEME_MODE="Dracula"|' ~/.theme_selected
+        sed -i 's|^export COLOR_MODE=.*|export COLOR_MODE="Light"|' ~/.theme_selected
+
+    # Altero as configuraçoes do gtk
+        # gtk2
+        sed -i 's/^gtk-icon-theme-name =.*/gtk-icon-theme-name = "Numix-Circle-Light"/' ~/.config/gtk-2.0/gtkrc
+        sed -i 's/^gtk-theme-name =.*/gtk-theme-name = "Yaru-Pink-light"/' ~/.config/gtk-2.0/gtkrc
+
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name="Numix-Circle-Light"/' ~/.gtkrc-2.0
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name="Yaru-Pink-light"/' ~/.gtkrc-2.0
+
+        # gtk3
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name=Yaru-Pink-light/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name=Numix-Circle-Light/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=0/' ~/.config/gtk-3.0/settings.ini
+
+        #Flatpak
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Yaru-Pink-light
+
+    # Suckless
+        sed -i 's|^#include "themes/.*|#include "themes/dracula_light.h"|' ~/.config/suckless/dwm/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/dracula_light.h"|' ~/.config/suckless/st/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/dracula_light.h"|' ~/.config/suckless/dmenu/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/dracula_light.h"|' ~/.config/suckless/slock/config.def.h
+
+    # Emacs Doom
+        sed -i 's|(setq doom-theme .*)|(setq doom-theme '"'"'doom-one-light)|' ~/.config/doom/config.el
+
+    # Btop
+        sed -i 's|^color_theme =.*|color_theme = "dracula-light"|' ~/.config/btop/btop.conf
+	;;
+    $vaporwave_dark)
+    # Arquivo variavel
+    	sed -i 's|^export THEME_MODE=.*|export THEME_MODE="Vaporwave"|' ~/.theme_selected
+        sed -i 's|^export COLOR_MODE=.*|export COLOR_MODE="Dark"|' ~/.theme_selected
+
+    # Altero as configuracoes do gtk
+        # GTK2
+        sed -i 's/^gtk-icon-theme-name =.*/gtk-icon-theme-name = "candy-icons"/' ~/.config/gtk-2.0/gtkrc
+        sed -i 's/^gtk-theme-name =.*/gtk-theme-name = "retrowave-glow"/' ~/.config/gtk-2.0/gtkrc
+
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name="candy-icons"/' ~/.gtkrc-2.0
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name="retrowave-glow"/' ~/.gtkrc-2.0
+
+        # GTK3
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name=retrowave-glow/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name= candy-icons/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=1/' ~/.config/gtk-3.0/settings.ini
+
+        #Flatpak
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=retrowave-glow
+
+    # Suckless
+        sed -i 's|^#include "themes/.*|#include "themes/vaporwave_dark.h"|' ~/.config/suckless/dwm/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/vaporwave_dark.h"|' ~/.config/suckless/st/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/vaporwave_dark.h"|' ~/.config/suckless/dmenu/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/vaporwave_dark.h"|' ~/.config/suckless/slock/config.def.h
+
+    # Emacs Doom
+        sed -i 's|(setq doom-theme .*)|(setq doom-theme '"'"'rebecca)|' ~/.config/doom/config.el
+
+    # Btop
+        sed -i 's|^color_theme =.*|color_theme = "vaporwave_dark"|' ~/.config/btop/btop.conf
+    ;;
+    $vaporwave_light)
+    # Arquivo variavel
+    	sed -i 's|^export THEME_MODE=.*|export THEME_MODE="Vaporwave"|' ~/.theme_selected
+        sed -i 's|^export COLOR_MODE=.*|export COLOR_MODE="Light"|' ~/.theme_selected
+
+    # Altero as configuraçoes do gtk
+        # gtk2
+        sed -i 's/^gtk-icon-theme-name =.*/gtk-icon-theme-name = "Numix-Circle-Light"/' ~/.config/gtk-2.0/gtkrc
+        sed -i 's/^gtk-theme-name =.*/gtk-theme-name = "Lavanda-Light"/' ~/.config/gtk-2.0/gtkrc
+
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name="Numix-Circle-Light"/' ~/.gtkrc-2.0
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name="Lavanda-Light"/' ~/.gtkrc-2.0
+
+        # gtk3
+        sed -i 's/^gtk-theme-name=.*/gtk-theme-name=Lavanda-Light/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-icon-theme-name=.*/gtk-icon-theme-name=Numix-Circle-Light/' ~/.config/gtk-3.0/settings.ini
+        sed -i 's/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=0/' ~/.config/gtk-3.0/settings.ini
+
+        #Flatpak
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --filesystem=$HOME/.themes
+        SUDO_ASKPASS=/usr/bin/ssh-askpass sudo flatpak override --env=GTK_THEME=Lavanda-Light
+
+
+    # Suckless
+        sed -i 's|^#include "themes/.*|#include "themes/vaporwave_light.h"|' ~/.config/suckless/dwm/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/vaporwave_light.h"|' ~/.config/suckless/st/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/vaporwave_light.h"|' ~/.config/suckless/dmenu/config.def.h
+        sed -i 's|^#include "themes/.*|#include "themes/vaporwave_light.h"|' ~/.config/suckless/slock/config.def.h
+
+    # Emacs Doom
+        sed -i 's|(setq doom-theme .*)|(setq doom-theme '"'"'rebecca)|' ~/.config/doom/config.el
+
+    # Btop
+        sed -i 's|^color_theme =.*|color_theme = "vaporwave_light"|' ~/.config/btop/btop.conf
+	;;
+
+
+    *)
+        exit 0
+    ;;
+esac
+
+if [[ -z $chosen ]]; then
+    exit 0
+else
+   # Abre o dunst com o tema certo
+    source $HOME/.theme_selected
+    killall dunst
+    dunst -conf "$HOME/.config/dunst/themes/${THEME_MODE}_${COLOR_MODE}" &
+    dunstify "Aplicando tema" "Aguarde.." -h int:value:10  -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
+
+    # Fecha programas systray
+    killall copyq
+    killall solaar
+    killall slock
+
+    # Compila dwm
+    cd $HOME/.config/suckless/dwm
+    rm config.h
+    make
+    SUDO_ASKPASS=/usr/bin/ssh-askpass sudo make clean install
+
+    dunstify "Aplicando tema" "Aguarde.." -h int:value:40 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
+
+    # Compila st
+    cd $HOME/.config/suckless/st
+    rm config.h
+    make
+    SUDO_ASKPASS=/usr/bin/ssh-askpass sudo make clean install
+
+    dunstify "Aplicando tema" "Aguarde.." -h int:value:60 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
+
+    # Compila dmenu
+    cd $HOME/.config/suckless/dmenu
+    rm config.h
+    make
+    SUDO_ASKPASS=/usr/bin/ssh-askpass sudo make clean install
+
+    # Compila slock
+    cd $HOME/.config/suckless/slock
+    rm config.h
+    make
+    SUDO_ASKPASS=/usr/bin/ssh-askpass sudo make clean install
+
+
+    dunstify "Aplicando tema" "Aguarde.." -h int:value:80 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
+
+    # Faz sincronizacao do doom
+    $HOME/.config/emacs/bin/doom sync
+
+    dunstify "Aplicando tema" "Aguarde.." -h int:value:99 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
+
+    # Restart dwm
+    xdotool key Super_L+shift+r
+
+    dunstify "Pronto" "Aplicação do tema finalizado!!!" -h int:value:100 -i /usr/share/icons/ePapirus/16x16/status/package-install.svg
+    exit 0
+fi

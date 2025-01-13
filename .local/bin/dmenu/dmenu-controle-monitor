@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# Carrega as configuracoes de tema
+source $HOME/.dotfiles/.theme_selected
+
+casa="󰍹  Monitor Externo"
+notebook="  Notebook"
+modo_game="Modo Game"
+so_monitor_externo="So monitor externo"
+duplica="Duplica a mesma visualização"
+noite="󱩍 Noite"
+dia="󰛨 Dia"
+tabletwaconhdmi="󰓶 Tablet Wacon HDMI"
+tabletwaconnotebook="󰓶 Tablet Wacon Notebook"
+
+# Variable passed to dmenu
+options="$casa\n$notebook\n$modo_game\n$so_monitor_externo\n$duplica\n$dia\n$noite\n$tabletwaconhdmi\n$tabletwaconnotebook"
+
+chosen="$(echo -e "$options" | dmenu -p "Scripts de monitor " )"
+case $chosen in
+    $casa)
+	    xrandr --output HDMI-0 --auto --rotate normal --dpi 96 --output eDP-1-1 --primary --auto --rotate normal --dpi 96 --left-of HDMI-0
+	    notify-send -t 3000 "󰡁 HDMI Inserido" "Adicionado tela via HDMI" --icon="/usr/share/icons/ePapirus/16x16/devices/computer.svg"
+        feh --bg-fill --randomize "$HOME/.wallpapers/${THEME_MODE}/${COLOR_MODE}/"
+	;;
+    $notebook)
+	    xrandr --output HDMI-0 --off --output eDP-1-1 --primary --auto --rotate normal --dpi 96
+	    notify-send -t 3000 "  Modo Laptop" "Alterado tela para modo Laptop" --icon="/usr/share/icons/ePapirus/16x16/devices/computer-laptop.svg"
+        feh --bg-fill --randomize "$HOME/.wallpapers/${THEME_MODE}/${COLOR_MODE}/"
+	;;
+    $modo_game)
+        xrandr --output HDMI-0 --mode 1920x1080 --rate 120 --pos 1920x0 --rotate normal --output eDP-1-1 --primary --mode 1920x1080 --rate 144 --pos 0x0 --rotate normal
+        systemctl --user stop redshift.service
+        killall redshift
+        redshift -P -O 6500
+        notify-send -t 3000 "󰡁 HDMI Inserido" "Adicionado tela via HDMI" --icon="/usr/share/icons/ePapirus/16x16/devices/computer.svg"
+        feh --bg-fill --randomize "$HOME/.wallpapers/${THEME_MODE}/${COLOR_MODE}/"
+    ;;
+    $so_monitor_externo)
+	    xrandr --output HDMI-0 --primary --auto --rotate normal --dpi 96 --output eDP-1-1 --off
+	    notify-send -t 3000 "󰡁 Só monitor externo" "Só monitor Externo" --icon="/usr/share/icons/ePapirus/16x16/devices/computer.svg"
+        feh --bg-fill --randomize "$HOME/.wallpapers/${THEME_MODE}/${COLOR_MODE}/"
+	;;
+    $duplica)
+	    xrandr --output HDMI-0 --primary --auto --rotate normal --dpi 96 --output eDP-1-1 --same-as HDMI-0
+	    notify-send -t 3000 "󰡁 Duplica visualização" "Ambos monitores estão com a mesma visualização" --icon="/usr/share/icons/ePapirus/16x16/devices/computer.svg"
+        feh --bg-fill --randomize "$HOME/.wallpapers/${THEME_MODE}/${COLOR_MODE}/"
+	;;
+    $dia)
+	    redshift -P -O 6500
+	    notify-send -t 3000 "󰛨 Modo Diurno" "Alterado o brilho da tela para o modo diurno" --icon="/usr/share/icons/ePapirus/16x16/actions/colors-chromablue.svg"
+	;;
+    $noite)
+	    redshift -P -O 4500
+	    notify-send -t 3000 "󱩍 Modo noturno" "Alterado o brilho da tela para o modo noturno" --icon="/usr/share/icons/ePapirus/16x16/actions/redeyes.svg"
+	;;
+    $tabletwaconhdmi)
+	    /home/anderson/.local/bin/mapwacon.sh -d "Wacom Intuos S Pen stylus" -s "HDMI-0"
+	    notify-send -t 3000 "󰓶 Tablet Wacon HDMI" "Configurado a área do tablet wacon para a tela HDMI" --icon="/usr/share/icons/ePapirus/16x16/devices/input-tablet.svg"
+	;;
+    $tabletwaconnotebook)
+	    /home/anderson/.local/bin/mapwacon.sh -d "Wacom Intuos S Pen stylus" -s "eDP-1-1"
+	    notify-send -t 3000 "󰓶 Tablet Wacon Notebook" "Configurado a área do tablet wacon para a tela do Notebook" --icon="/usr/share/icons/ePapirus/16x16/devices/input-tablet.svg"
+	;;
+esac
