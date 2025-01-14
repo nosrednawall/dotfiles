@@ -22,6 +22,7 @@ alias free='free -h'
 alias myip="ip -f inet address | grep inet | grep -v 'lo$' | cut -d ' ' -f 6,13 && curl ifconfig.me && echo ' external ip'"
 alias x="exit"
 alias copia_site="wget -r -erobots=off"
+alias yt='ytfzf --max-threads=4 --thumbnail-quality=maxres --features=hd -t --ii=https://yt.securityops.co'
 
 # Git aliases
 alias gp="git push -u origin main"
