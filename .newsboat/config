@@ -3,6 +3,10 @@
 # Tested with the Kitty gruvbox terminal colour scheme
 # https://github.com/wdomitrz/kitty-gruvbox-theme
 
+# Navegador
+browser "xdg-open %u"
+
+# Cores
 color background          color223   color0
 color listnormal          color223   color0
 color listnormal_unread   color2     color0
