@@ -1,0 +1,10 @@
+#!/bin/bash
+ICON="/usr/share/icons/rstudio.png"
+while true; do
+    WIN_ID=$(xwininfo -root -tree | grep "RStudio" | awk '{print $1}')
+    if [ -n "$WIN_ID" ]; then
+        xseticon -id "$WIN_ID" "$ICON"
+        break
+    fi
+    sleep 1
+done
