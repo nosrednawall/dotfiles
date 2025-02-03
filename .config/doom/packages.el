@@ -52,3 +52,5 @@
 (package! rainbow-mode)
 (package! rebecca-theme)
 (package! catppuccin-theme)
+(package! polymode)
+(package! quarto-mode)

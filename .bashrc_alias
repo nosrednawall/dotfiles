@@ -5,7 +5,7 @@
 
 # alias dwm
 alias compila="rm config.h; make; sudo make clean install"
-alias edwm="cd /home/anderson/.dotfiles/.config/suckless/dwm"
+alias edwm="cd /home/anderson/.config/suckless/dwm"
 
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -22,7 +22,11 @@ alias free='free -h'
 alias myip="ip -f inet address | grep inet | grep -v 'lo$' | cut -d ' ' -f 6,13 && curl ifconfig.me && echo ' external ip'"
 alias x="exit"
 alias copia_site="wget -r -erobots=off"
+
+# baixa videos e musicas youtube
 alias yt='ytfzf --max-threads=4 --thumbnail-quality=maxres --features=hd -t --ii=https://yt.securityops.co'
+alias baixa_mp3='yt-dlp -f bestaudio --extract-audio --audio-format m4a --embed-thumbnail --add-metadata'
+alias ytmp3='yt-dlp -f bestaudio --extract-audio --audio-format m4a --audio-quality 0 -o "%(title)s.%(ext)s" '
 
 # Git aliases
 alias gp="git push -u origin main"
