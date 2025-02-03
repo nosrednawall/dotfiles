@@ -111,3 +111,25 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+;; Company config for ess
+
+(setq company-selection-wrap-around t
+      company-tooltip-align-annotations t
+      company-idle-delay 0.45
+      company-minimum-prefix-length 3
+      company-tooltip-limit 10)
+
+;; FOr quarto mode
+(add-to-list 'auto-mode-alist '("\\.Rmd\\'" . poly-quarto-mode))
+
+;; Altera o local para o diretorio de R
+(defun my/set-r-project-directory ()
+  "Set the working directory to the one containing the .Rproj file."
+  (interactive)
+  (let ((rproj (locate-dominating-file default-directory ".Rproj")))
+    (when rproj
+      (cd rproj)
+      (message "Set working directory to: %s" rproj))))
+
+(add-hook 'ess-R-post-run-hook 'my/set-r-project-directory)
