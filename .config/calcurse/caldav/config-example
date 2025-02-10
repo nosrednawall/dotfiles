@@ -3,7 +3,7 @@
 Binary = calcurse
 
 Hostname = apidata.googleusercontent.com
-Path = /caldav/v2/anderson.inacio.dev@gmail.com/events/
+Path = /caldav/v2/SEU_EMAIL_AQUIm/events/
 AuthMethod = oauth2
 SyncFilter = cal
 
@@ -24,7 +24,10 @@ DryRun = No
 # Use the following to synchronize with an OAuth2-based service
 # such as Google Calendar.
 [OAuth2]
-ClientID = pass API/calcurse-caldav-clientID
-ClientSecret = pass API/calcurse-caldav-clienteSecret
+ClientID = SEU_CODIGO_AQUI
+ClientSecret = SEU_CLIENT_SECRET
 Scope = https://www.googleapis.com/auth/calendar
 RedirectURI = http://127.0.0.1
+
+#ClientID = pass API/calcurse-caldav-clientID
+#ClientSecret = pass API/calcurse-caldav-clienteSecret
