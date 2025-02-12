@@ -133,3 +133,20 @@
       (message "Set working directory to: %s" rproj))))
 
 (add-hook 'ess-R-post-run-hook 'my/set-r-project-directory)
+
+
+;; Navegador para ess
+(setq browse-url-emacs-program "firefox") ; ou seu navegador
+(setq browse-url-browser-function 'browse-url-generic)
+
+
+(global-unset-key (kbd "C-z"))
+
+(global-set-key (kbd "C-z C-z") 'my-suspend-frame)
+
+(defun my-suspend-frame ()
+  "In a GUI environment, do nothing; otherwise `suspend-frame'."
+  (interactive)
+  (if (display-graphic-p)
+      (message "suspend-frame disabled for graphical displays.")
+    (suspend-frame)))
