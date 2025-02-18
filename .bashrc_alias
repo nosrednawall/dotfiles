@@ -6,6 +6,7 @@
 # alias dwm
 alias compila="rm config.h; make; sudo make clean install"
 alias edwm="cd /home/anderson/.config/suckless/dwm"
+alias flexipatch-execute="mv $HOME/.config/suckless/dwm/config.def.h "$HOME/.config/suckless/dwm/$(date +%Y-%m-%d_%H:%M:%S)-backup-config"; $HOME/.config/suckless/others/flexipatch/flexipatch-finalizer/flexipatch-finalizer.sh -r -d $HOME/.config/suckless/others/flexipatch/dwm-flexipatch-novo/ -o $HOME/.config/suckless/dwm/"
 
 alias ..='cd ..'
 alias ...='cd ../..'
