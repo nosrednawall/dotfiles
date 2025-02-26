@@ -29,10 +29,10 @@
   _unitId: 27516F9B
   _wpid: B030
   change-host: null
-  divert-keys: {82: 0, 264: 1}
+  divert-keys: {82: 0, 264: 0}
   dpi: 2500
   lowres-scroll-mode: false
-  reprogrammable-keys: {82: 82, 264: 264}
+  reprogrammable-keys: {82: 82, 264: 81}
 - _NAME: G203 LIGHTSYNC Gaming Mouse
   _modelId: C09D00000000
   _sensitive: {hires-scroll-mode: ignore, hires-smooth-invert: ignore, hires-smooth-resolution: ignore}
