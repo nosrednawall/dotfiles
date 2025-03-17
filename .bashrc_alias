@@ -2,7 +2,6 @@
 
 # Complementos
 
-
 # alias dwm
 alias compila="rm config.h; make; sudo make clean install"
 alias edwm="cd /home/anderson/.config/suckless/dwm"

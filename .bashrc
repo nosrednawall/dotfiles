@@ -155,3 +155,6 @@ source "$HOME/.bashrc_environments"
 # alias bashconfig="mate ~/.bashrc"
 # alias ohmybash="mate ~/.oh-my-bash"
 # Path to your oh-my-bash installation.
+
+# Created by `pipx` on 2025-03-05 18:09:09
+export PATH="$PATH:/home/anderson/.dotfiles/.local/bin"
