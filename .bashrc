@@ -125,7 +125,7 @@ source "$OSH"/oh-my-bash.sh
 source "$HOME/.theme_selected"
 source "$HOME/.bashrc_alias"
 source "$HOME/.bashrc_exports"
-source "$HOME/.bashrc_environments"
+#source "$HOME/.bashrc_environments"
 
 # User configuration
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -158,3 +158,5 @@ source "$HOME/.bashrc_environments"
 
 # Created by `pipx` on 2025-03-05 18:09:09
 export PATH="$PATH:/home/anderson/.dotfiles/.local/bin"
+
+

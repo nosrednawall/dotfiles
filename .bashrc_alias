@@ -21,7 +21,7 @@ alias df='df -h'
 alias free='free -h'
 alias myip="ip -f inet address | grep inet | grep -v 'lo$' | cut -d ' ' -f 6,13 && curl ifconfig.me && echo ' external ip'"
 alias x="exit"
-alias copia_site="wget -r -erobots=off"
+alias baixa_site="wget -r -erobots=off"
 
 # baixa videos e musicas youtube
 alias yt='ytfzf --max-threads=4 --thumbnail-quality=maxres --features=hd -t --ii=https://yt.securityops.co'
@@ -44,3 +44,6 @@ alias EDITOR="emacsclient -c -a 'emacs'"
 alias mov-cli-activate="source ~/.venv/mov-cli-venv/bin/activate"
 alias aquario="/usr/local/bin/asciiquarium"
 alias live_wallpaper="xwinwrap -g 1920x1080 -ov -debug -- mpv --no-audio --loop --no-border -wid WID --panscan=1 --geometry=100%:100% '.wallpapers/live-wallpaper/initiald/toyota-ae86-drifting-initial-d-moewalls-com.mp4'"
+
+# Conda
+alias R-env="conda activate r-env"
