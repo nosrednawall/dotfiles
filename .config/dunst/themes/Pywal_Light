@@ -90,7 +90,7 @@
     frame_width = 3
 
     # Defines color of the frame around the notification window.
-frame_color = "#c1c0c0"
+frame_color = "#9b9890"
 
     # Size of gap to display between notifications - requires a compositor.
     # If value is greater than 0, separator_height will be ignored and a border
@@ -305,13 +305,13 @@ frame_color = "#c1c0c0"
     per_monitor_dpi = false
 
 [urgency_low]
-background = "#070405"
-foreground = "#c1c0c0"
+background = "#1f1b0d"
+foreground = "#9b9890"
 
 [urgency_normal]
-background = "#070405"
-foreground = "#c1c0c0"
+background = "#1f1b0d"
+foreground = "#9b9890"
 
 [urgency_critical]
-background = "#070405"
-foreground = "#c1c0c0"
+background = "#1f1b0d"
+foreground = "#9b9890"
