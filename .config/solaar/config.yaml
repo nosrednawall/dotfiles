@@ -34,10 +34,16 @@
   lowres-scroll-mode: false
   reprogrammable-keys: {82: 82, 264: 81}
 - _NAME: G203 LIGHTSYNC Gaming Mouse
+  _absent: [hi-res-scroll, lowres-scroll-mode, hires-smooth-invert, hires-smooth-resolution, hires-scroll-mode, scroll-ratchet, smart-shift, thumb-scroll-invert,
+    thumb-scroll-mode, report_rate_extended, pointer_speed, dpi_extended, speed-change, backlight, backlight_level, backlight_duration_hands_out, backlight_duration_hands_in,
+    backlight_duration_powered, backlight-timed, led_control, led_zone_, brightness_control, fn-swap, reprogrammable-keys, persistent-remappable-keys, divert-keys,
+    disable-keyboard-keys, crown-smooth, divert-crown, divert-gkeys, m-key-leds, mr-key-led, multiplatform, change-host, gesture2-gestures, gesture2-divert,
+    gesture2-params, sidetone, equalizer, adc_power_management]
+  _battery: 0
   _modelId: C09D00000000
   _sensitive: {hires-scroll-mode: ignore, hires-smooth-invert: ignore, hires-smooth-resolution: ignore}
   _unitId: '24002900'
-  dpi: 800
+  dpi: 1600
   onboard_profiles: 257
   per-key-lighting: {1: -1, 2: -1, 3: -1}
   report_rate: 1

@@ -9,16 +9,16 @@
 }
 
 * {
-    bg0: #070405;
-    bg1: #070405;
-    grey0: #65525c;
-    fg0: #c1c0c0;
+    bg0: #1e1e1e;
+    bg1: #1e1e1e;
+    grey0: #766161;
+    fg0: #9e9393;
 
-    blue: #955348;
-    red: #A78C79;
-    orange: #6D848B;
-    green: #A59A92;
-    bgStatusline3: #65525c;
+    blue: #6f6955;
+    red: #78755a;
+    orange: #77785a;
+    green: #7a7c5d;
+    bgStatusline3: #766161;
 
     background-color: @bg0;
 }
