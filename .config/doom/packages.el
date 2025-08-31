@@ -51,3 +51,4 @@
 (package! rainbow-mode)
 (package! rebecca-theme)
 (package! catppuccin-theme)
+(package! pyvenv)
