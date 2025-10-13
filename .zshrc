@@ -118,6 +118,10 @@ plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+source "$HOME/.theme_selected"
+source "$HOME/.bashrc_alias"
+source "$HOME/.bashrc_exports"
+source "$HOME/.bashrc_environments"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 

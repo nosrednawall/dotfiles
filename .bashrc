@@ -8,7 +8,7 @@ export OSH='/home/anderson/.oh-my-bash'
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-bash is loaded.
-OSH_THEME="minimal"
+OSH_THEME="vscode"
 
 # If you set OSH_THEME to "random", you can ignore themes you don't like.
 # OMB_THEME_RANDOM_IGNORED=("powerbash10k" "wanelo")
@@ -159,8 +159,6 @@ source "$HOME/.bashrc_exports"
 # Created by `pipx` on 2025-03-05 18:09:09
 export PATH="$PATH:/home/anderson/.dotfiles/.local/bin"
 
-
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/anderson/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -175,4 +173,6 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+
 

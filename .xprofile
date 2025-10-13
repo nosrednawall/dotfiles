@@ -11,3 +11,16 @@ export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/games:$PATH"
 
 export QT_QPA_PLATFORMTHEME=qt5ct
+
+# ~/.xprofile ou ~/.xinitrc
+#!/bin/bash
+
+# Corrigir permissões dos scripts do dwmblocks
+chmod +x ~/.config/suckless/scripts/dmenu/*
+chmod +x ~/.config/suckless/scripts/dwm/*
+chmod +x ~/.config/suckless/scripts/dwmblocks/*
+chmod +x ~/.config/suckless/scripts/others/*
+
+# Garantir que a cache tenha permissões corretas
+mkdir -p ~/.cache
+chmod 755 ~/.cache

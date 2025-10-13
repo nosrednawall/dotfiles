@@ -53,3 +53,6 @@
 (package! catppuccin-theme)
 (package! pyvenv)
 (package! multiple-cursors)
+(package! conda)
+(package! tree-sitter)
+(package! tree-sitter-langs)
