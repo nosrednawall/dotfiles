@@ -4,10 +4,46 @@ case $- in
     *) return;;
 esac
 
+# =============================================================================
+# PATH CONFIGURATION - VERSÃO DEFINITIVA
+# =============================================================================
+
+export PATH=""
+
+# Primeiro: obter o PATH base do sistema
+CLEAN_PATH="/usr/local/bin:/usr/bin:/bin:/usr/games"
+
+# Adicionar paths do usuário na ordem correta (mais genéricos primeiro)
+CLEAN_PATH="$HOME/.local/bin:$CLEAN_PATH"
+CLEAN_PATH="$HOME/.config/emacs/bin:$CLEAN_PATH"
+CLEAN_PATH="$HOME/.local/bin/mpd:$CLEAN_PATH"
+
+# Adicionar scripts do suckless
+CLEAN_PATH="$HOME/.local/bin/dmenu:$CLEAN_PATH"
+CLEAN_PATH="$HOME/.local/bin/dwm:$CLEAN_PATH"
+CLEAN_PATH="$HOME/.local/bin/dwmblocks:$CLEAN_PATH"
+CLEAN_PATH="$HOME/.local/bin/others:$CLEAN_PATH"
+
+# Adicionar dotfiles
+CLEAN_PATH="$HOME/.dotfiles/.local/bin:$CLEAN_PATH"
+
+# FINALMENTE: adicionar conda no FINAL
+CLEAN_PATH="$CLEAN_PATH:$HOME/miniconda3/condabin"
+
+# Exportar o PATH limpo
+export PATH="$CLEAN_PATH"
+
+# Limpar variável temporária
+unset CLEAN_PATH
+
+
+# =============================================================================
+# OH-MY-BASH CONFIGURATION
+# =============================================================================
+
 export OSH='/home/anderson/.oh-my-bash'
 
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-bash is loaded.
+# Set name of the theme to load
 OSH_THEME="vscode"
 
 # If you set OSH_THEME to "random", you can ignore themes you don't like.
@@ -16,8 +52,7 @@ OSH_THEME="vscode"
 # Uncomment the following line to use case-sensitive completion.
 # OMB_CASE_SENSITIVE="true"
 
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
+# Uncomment the following line to use hyphen-insensitive completion.
 # OMB_HYPHEN_SENSITIVE="false"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
@@ -39,8 +74,7 @@ OSH_THEME="vscode"
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
+# under VCS as dirty.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # Uncomment the following line if you don't want the repository to be considered dirty
@@ -51,37 +85,9 @@ OSH_THEME="vscode"
 # of untracked files in the repository.
 # SCM_GIT_IGNORE_UNTRACKED="true"
 
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.  One of the following values can
-# be used to specify the timestamp format.
-# * 'mm/dd/yyyy'     # mm/dd/yyyy + time
-# * 'dd.mm.yyyy'     # dd.mm.yyyy + time
-# * 'yyyy-mm-dd'     # yyyy-mm-dd + time
-# * '[mm/dd/yyyy]'   # [mm/dd/yyyy] + [time] with colors
-# * '[dd.mm.yyyy]'   # [dd.mm.yyyy] + [time] with colors
-# * '[yyyy-mm-dd]'   # [yyyy-mm-dd] + [time] with colors
-# If not set, the default value is 'yyyy-mm-dd'.
-# HIST_STAMPS='yyyy-mm-dd'
-
-# Uncomment the following line if you do not want OMB to overwrite the existing
-# aliases by the default OMB aliases defined in lib/*.sh
-# OMB_DEFAULT_ALIASES="check"
-
-# Would you like to use another custom folder than $OSH/custom?
-# OSH_CUSTOM=/path/to/new-custom-folder
-
-# To disable the uses of "sudo" by oh-my-bash, please set "false" to
-# this variable.  The default behavior for the empty value is "true".
 OMB_USE_SUDO=true
 
-# To enable/disable display of Python virtualenv and condaenv
-# OMB_PROMPT_SHOW_PYTHON_VENV=true  # enable
-# OMB_PROMPT_SHOW_PYTHON_VENV=false # disable
-
-# Which completions would you like to load? (completions can be found in ~/.oh-my-bash/completions/*)
-# Custom completions may be added to ~/.oh-my-bash/custom/completions/
-# Example format: completions=(ssh git bundler gem pip pip3)
-# Add wisely, as too many completions slow down shell startup.
+# Which completions would you like to load?
 completions=(
   git
   composer
@@ -94,18 +100,12 @@ completions=(
   system
 )
 
-# Which aliases would you like to load? (aliases can be found in ~/.oh-my-bash/aliases/*)
-# Custom aliases may be added to ~/.oh-my-bash/custom/aliases/
-# Example format: aliases=(vagrant composer git-avh)
-# Add wisely, as too many aliases slow down shell startup.
+# Which aliases would you like to load?
 aliases=(
   general
 )
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-bash/plugins/*)
-# Custom plugins may be added to ~/.oh-my-bash/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
+# Which plugins would you like to load?
 plugins=(
   git
   bashmarks
@@ -114,50 +114,57 @@ plugins=(
   battery
 )
 
-# Which plugins would you like to conditionally load? (plugins can be found in ~/.oh-my-bash/plugins/*)
-# Custom plugins may be added to ~/.oh-my-bash/custom/plugins/
-# Example format:
-#  if [ "$DISPLAY" ] || [ "$SSH" ]; then
-#      plugins+=(tmux-autoattach)
-#  fi
-
 source "$OSH"/oh-my-bash.sh
-source "$HOME/.theme_selected"
-source "$HOME/.bashrc_alias"
-source "$HOME/.bashrc_exports"
-#source "$HOME/.bashrc_environments"
 
-# User configuration
-# export MANPATH="/usr/local/man:$MANPATH"
+# =============================================================================
+# ALIASES (incorporado do bashrc_alias)
+# =============================================================================
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+# Complementos
+alias compila="rm config.h; make; sudo make clean install"
+alias edwm="cd /home/anderson/.config/suckless/dwm"
+alias flexipatch-execute="mv $HOME/.config/suckless/dwm/config.def.h \"$HOME/.config/suckless/dwm/$(date +%Y-%m-%d_%H:%M:%S)-backup-config\"; $HOME/.config/suckless/others/flexipatch/flexipatch-finalizer/flexipatch-finalizer.sh -r -d $HOME/.config/suckless/others/flexipatch/dwm-flexipatch/ -o $HOME/.config/suckless/dwm/"
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+alias ..='cd ..'
+alias ...='cd ../..'
+alias install='sudo apt install'
+alias update='sudo apt update'
+alias upgrade='sudo apt upgrade'
+alias uplist='apt list --upgradable'
+alias search='apt search'
+alias remove='sudo apt autoremove'
+alias df='df -h'
+alias free='free -h'
+alias myip="ip -f inet address | grep inet | grep -v 'lo$' | cut -d ' ' -f 6,13 && curl ifconfig.me && echo ' external ip'"
+alias x="exit"
+alias baixa_site="wget -r -erobots=off"
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# YouTube downloads
+alias yt='ytfzf --max-threads=4 --thumbnail-quality=maxres --features=hd -t --ii=https://yt.securityops.co'
+alias baixa_mp3='yt-dlp -f bestaudio --extract-audio --audio-format m4a --embed-thumbnail --add-metadata'
+alias ytmp3='yt-dlp -f bestaudio --extract-audio --audio-format m4a --audio-quality 0 -o "%(title)s.%(ext)s" '
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
+# Git aliases
+alias gp="git push -u origin main"
+alias gsave="git commit -m 'save'"
+alias gs="git status"
+alias gc="git clone"
 
-# Set personal aliases, overriding those provided by oh-my-bash libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-bash
-# users are encouraged to define aliases within the OSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias bashconfig="mate ~/.bashrc"
-# alias ohmybash="mate ~/.oh-my-bash"
-# Path to your oh-my-bash installation.
+# Programas
+alias em="emacs -nw"
+alias nvidia="__NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia"
+alias betterdiscord-update="DISC_CONFIG=\"\$HOME/.var/app/com.discordapp.Discord/config/discord\" && BD_ASAR=betterdiscord.asar && wget --timestamping -P \"\${DISC_CONFIG}/../BetterDiscord/data\" -- \"https://github.com/BetterDiscord/BetterDiscord/releases/latest/download/\${BD_ASAR}\" && DISC_VER=\"\$(ls --sort=time --time=creation \"\${DISC_CONFIG}\" | grep -E -m 1 '^[0-9]+\\.[0-9]+\\.[0-9]+\$')\" && echo -e \"require('../../../../BetterDiscord/data/\${BD_ASAR}');\\nmodule.exports = require('./core.asar');\" | tee \"\${DISC_CONFIG}/\${DISC_VER}/modules/discord_desktop_core/index.js\" && echo -e \"\\nBetterDiscord installed. Restart Discord if currently running.\" || echo -e \"\\nInstallation failed.\""
+alias EDITOR="emacsclient -c -a 'emacs'"
+alias mov-cli-activate="source ~/.venv/mov-cli-venv/bin/activate"
+alias aquario="/usr/local/bin/asciiquarium"
+alias live_wallpaper="xwinwrap -g 1920x1080 -ov -debug -- mpv --no-audio --loop --no-border -wid WID --panscan=1 --geometry=100%:100% '.wallpapers/live-wallpaper/initiald/toyota-ae86-drifting-initial-d-moewalls-com.mp4'"
 
-# Created by `pipx` on 2025-03-05 18:09:09
-export PATH="$PATH:/home/anderson/.dotfiles/.local/bin"
+# Conda
+alias R-env="conda activate r-env"
+
+# =============================================================================
+# CONDA CONFIGURATION
+# =============================================================================
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -174,5 +181,13 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# =============================================================================
+# FUNÇÕES E CONFIGURAÇÕES ADICIONAIS
+# =============================================================================
 
+unset MAILCHECK
 
+# Source do tema selecionado (se existir)
+if [ -f "$HOME/.theme_selected" ]; then
+    source "$HOME/.theme_selected"
+fi

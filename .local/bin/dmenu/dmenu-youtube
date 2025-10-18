@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# Verifique se o curl está instalado
+if ! command -v curl &> /dev/null
+then
+    echo "curl não está instalado. Por favor, instale-o e tente novamente."
+    exit
+fi
+
+# Verifique se o jq está instalado
+if ! command -v jq &> /dev/null
+then
+    echo "jq não está instalado. Por favor, instale-o e tente novamente."
+    exit
+fi
+
+# Verifique se o dmenu está instalado
+if ! command -v dmenu &> /dev/null
+then
+    echo "dmenu não está instalado. Por favor, instale-o e tente novamente."
+    exit
+fi
+
+# Verifique se o mpv está instalado
+if ! command -v mpv &> /dev/null
+then
+    echo "mpv não está instalado. Por favor, instale-o e tente novamente."
+    exit
+fi
+
+# Sua chave de API do YouTube
+API_KEY="$(cat $HOME/.cache/google_youtube_api_key)"
+# Solicite ao usuário que insira o termo de pesquisa
+query=$(echo "" | dmenu -p "Pesquisar no YouTube:")
+
+# Se a pesquisa estiver vazia, saia do script
+if [ -z "$query" ]; then
+    exit 1
+fi
+
+# Substitua espaços na query por + para a URL de pesquisa
+encoded_query=$(echo "$query" | sed 's/ /+/g')
+
+# Faça a pesquisa no YouTube
+response=$(curl -s "https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=20&q=$encoded_query&key=$API_KEY")
+
+# Verifique se a resposta contém itens
+if [ $(echo "$response" | jq '.items | length') -eq 0 ]; then
+    echo "Nenhum vídeo encontrado."
+    exit 1
+fi
+
+# Prepare a lista de vídeos para o dmenu
+videos=$(echo "$response" | jq -r '.items[] | "\(.snippet.title) - \(.snippet.channelTitle) \(.id.videoId)"')
+
+# Use o dmenu para escolher um vídeo
+selected=$(echo "$videos" | dmenu -p "Escolha um vídeo:")
+
+# Se o usuário não selecionar um vídeo, saia do script
+if [ -z "$selected" ]; then
+    exit 1
+fi
+
+# Extraia o ID do vídeo selecionado
+video_id=$(echo "$selected" | awk '{print $NF}')
+
+# Construa a URL do vídeo
+url="https://www.youtube.com/watch?v=$video_id"
+
+# Reproduza o vídeo usando mpv
+mpv "$url"

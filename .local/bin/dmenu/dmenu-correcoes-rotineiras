@@ -1,0 +1,13 @@
+#!/bin/bash
+
+bluetooth="Bluetooth"
+
+# Variable passed to rofi
+options="$bluetooth"
+
+chosen="$(echo -e "$options" | dmenu -p "Correções " )"
+case $chosen in
+    $bluetooth)
+	SUDO_ASKPASS=/usr/bin/ssh-askpass sudo -A rmmod btusb ; rmmod btintel ; modprobe btintel ; modprobe btusb
+	;;
+esac

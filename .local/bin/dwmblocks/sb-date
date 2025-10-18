@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f $arquivo_modo ]; then
+    source $arquivo_modo
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
+# Carrega as cores do tema
+source ~/.theme_selected
+
+day=$(date "+%d")
+image="/usr/share/icons/Numix/64/places/calendar-$day.svg"
+
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+	    echo "^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^ $(date +'%d/%m') ^d^ "
+    ;;
+	"MEDIO")
+		echo "^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^ $(date +'%d/%m') ^d^ "
+	;;
+    "ICONES")
+        echo "^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^ $(date +"%d/%m" | sed 's/  / /g') ^d^ "
+    ;;
+	*)
+		echo "^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^ $(date +"%a %d %b" | sed 's/  / /g') ^d^ "
+    ;;
+esac
+
+case $BUTTON in
+   # 1) notify-send "Este Mês" "$(cal | sed "s/\<$(date +'%e'|tr -d ' ')\>/<b><span color='red'>&<\/span><\/b>/")" --icon $image && notify-send "Eventos Agendados" "$(calcurse -d7)" ;;
+
+    2) setsid -f st -e calcurse ;;
+	6) setsid -f st -e emacs -nw "$0" ;;
+esac
+
+exit 0
+

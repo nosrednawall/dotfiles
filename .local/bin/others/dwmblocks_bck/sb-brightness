@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f "$arquivo_modo" ]; then
+    source "$arquivo_modo"
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
+# Carrega o tema
+source ~/.theme_selected
+
+brilho=$(brightnessctl | awk '/%/ {print$4}' | cut -c 2-4 | sed 's/%//' | sed 's/)//')
+brilhoIcone="^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰃠 ^d^ ^c$COLOR_1^$brilho^d^"
+
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+        echo ""
+    ;;
+    "MEDIO")
+        echo ""
+    ;;
+    *)
+        echo "$brilhoIcone  "
+    ;;
+esac
+
+# funcoes cliclaveis
+case $BUTTON in
+    1) xdotool key Super_L+Shift+F7 ;;
+    4) bash ~/.config/suckless/scripts/dwm/dwm-brilho-tela-aumenta ;;
+    5) bash ~/.config/suckless/scripts/dwm/dwm-brilho-tela-diminui ;;
+    6) setsid -f st -e emacs -nw "$0" ;;
+esac
+
+exit 0

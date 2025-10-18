@@ -1,0 +1,47 @@
+#!/bin/bash
+
+MINIMO="Minimo - Apenas data, Hora e Pomodoro"
+COMPLETO="Completo - Todos os Blocks possíveis"
+ICONES="Icones - Completo porém apenas icones"
+MEDIO="Médio - Apenas data, hora, volumes, players e pomodoro"
+MOSTRAR_LUA="Mostra o block com as fases da lua"
+
+# Variable passed to dmenu
+options="$COMPLETO\n$ICONES\n$MEDIO\n$MINIMO\n$MOSTRAR_LUA"
+
+chosen="$(echo -e "$options" | dmenu -p "Modos DWMBLOCKS " )"
+case $chosen in
+    $MINIMO)
+        MODO_SELECIONADO="MINIMO"
+    ;;
+    $MEDIO)
+        MODO_SELECIONADO="MEDIO"
+    ;;
+    $COMPLETO)
+        MODO_SELECIONADO="COMPLETO"
+    ;;
+    $ICONES)
+        MODO_SELECIONADO="ICONES"
+    ;;
+    $MOSTRAR_LUA)
+        MODO_SELECIONADO="MOSTRAR_LUA"
+    ;;
+esac
+
+if [[ -z $chosen ]]; then
+    exit 0
+else
+
+    rm -rf $HOME/.cache/dwmblocks_modo_operacao
+    cat > $HOME/.cache/dwmblocks_modo_operacao << EOF
+#!/bin/bash
+OPERATION_MODE="$MODO_SELECIONADO"
+EOF
+    sleep 0.8
+    # força os blocos atualizarem
+    for i in {35..54}; do
+        kill -$i $(pidof dwmblocks)
+    done
+    # notificacao
+    notify-send -t 3000 "Modo DWMBlocks" "Alterado o modo do DWMBlocks para $MODO_SELECIONADO" --icon="/usr/share/icons/ePapirus/16x16/actions/escape-direction-all.svg"
+fi

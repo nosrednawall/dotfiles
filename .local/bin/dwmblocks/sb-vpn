@@ -1,0 +1,56 @@
+#!/bin/bash
+
+###### Observação 2025-07-19
+## Dá um erro bem bizzaro quando abro 2 vpns, no bloco ele para de renderizar as cores, e fica colocando os caracteres sem renderização
+## Acho que isso ocorre porque limitei os blocos pára 80 caracteres de saída
+
+
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f $arquivo_modo ]; then
+    source $arquivo_modo
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
+# Carrega as cores do tema
+source ~/.theme_selected
+
+status=$(ip -f inet address | grep inet | grep -E 'wg0$' -ic)
+status_nordvpn=$(nordvpn status | grep -E "^Status: Connected$" -ic)
+status_tailscale=$(tailscale status | grep -E "Tailscale is stopped." -ic)
+
+if [ $status -eq 1 ]; then
+    vpn1="^b$COLOR_4^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_BACKGROUND^^b$COLOR_12^ WVPN ^d^ "
+else
+    vpn1=""
+fi
+
+if [ $status_nordvpn -eq 1 ]; then
+    vpn2="^b$COLOR_5^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_BACKGROUND^^b$COLOR_13^ NVPN ^d^ "
+else
+    vpn2=""
+fi
+
+if [ $status_tailscale -eq 1 ]; then
+    vpn3=""
+else
+    vpn3="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^ TVPN ^d^ "
+fi
+
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+        echo ""
+    ;;
+    *)
+        echo "$vpn1$vpn2$vpn3"
+    ;;
+esac
+
+# Funções clicáveis
+case $BUTTON in
+    1) bash ~/.config/suckless/scripts/dmenu/dmenu-vpn ;;
+    6) setsid -f st -e emacs -nw "$0" ;;
+esac

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Carrega o player atual
+source ~/.cache/playerctl_selecionado
+
+# Roda o comando
+playerctl --all-players pause
+
+# Envia notificacao
+~/.local/bin/playerctl_songinfo
+
+# Atualiza dwmblocks
+kill -35 $(pidof dwmblocks)

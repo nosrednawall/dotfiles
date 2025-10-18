@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Carrega as configuracoes de tema
+source $HOME/.dotfiles/.theme_selected
+noite="󱩍 Noite"
+dia="󰛨 Dia"

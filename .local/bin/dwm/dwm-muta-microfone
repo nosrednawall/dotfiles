@@ -1,0 +1,16 @@
+#!/bin/bash
+
+pactl set-source-mute @DEFAULT_SOURCE@ toggle
+#volume=$(pactl get-source-mute @DEFAULT_SOURCE@)
+is_mute=$(pactl get-source-mute @DEFAULT_SOURCE@ | grep -E 'sim|yes' -ic)
+
+# Atualiza dwmblocks
+kill -44 $(pidof dwmblocks)
+
+
+if [ "$is_mute" -eq 1 ]; then
+    #notify-send -t 3000 " Mic Mute:Yes" "Microfone mutado" --icon="/usr/share/icons/ePapirus/24x24/panel/audio-input-microphone-muted.svg" # -h string:bgcolor:#282828 -h string:fgcolor:#ebdbb2
+    notify-send -t 3000 " Mic Mute:Yes" "Microfone mutado" --icon="/usr/share/icons/ePapirus/16x16/devices/audio-input-microphone.svg"
+else
+    notify-send -t 3000 " Mic Mute:No" "Microfone desmutado" --icon="/usr/share/icons/ePapirus/16x16/devices/audio-input-microphone.svg"
+fi

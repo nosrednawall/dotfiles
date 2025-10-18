@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Diretório de imagens
+IMAGE_DIR="$HOME/.wallpapers/Aleatorios"
+IMAGE_LIST=$(ls "$IMAGE_DIR")
+
+# Mostrar opções no dmenu
+SELECTED_IMAGE=$(echo "$IMAGE_LIST" | dmenu -p "Escolha uma imagem:")
+
+if [ -n "$SELECTED_IMAGE" ]; then
+    IMAGE_PATH="$IMAGE_DIR/$SELECTED_IMAGE"
+
+    # Usar ueberzug para exibir a imagem
+    ueberzug cmd <<< "add \
+    --identifier=preview \
+    --x=2 \
+    --y=2 \
+    --width=40 \
+    --height=20 \
+    --path=$IMAGE_PATH"
+
+    # Aguarda a escolha
+    read -p "Pressione [Enter] para continuar..."
+
+    # Remover a visualização da imagem
+    ueberzug cmd <<< "remove --identifier=preview"
+fi

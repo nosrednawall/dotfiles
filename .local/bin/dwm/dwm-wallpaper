@@ -1,0 +1,19 @@
+#!/bin/bash
+
+source ~/.theme_selected
+arquivo=$(echo ~/.dotfiles/.config/rofi/themes/${THEME_MODE}_${COLOR_MODE}.rasi | tr '[:upper:]' '[:lower:]')
+
+# Caminho da pasta onde as imagens estão armazenadas
+wallpaper_folder="$HOME/.wallpapers/Aleatorios"  # ou o caminho da pasta de sua escolha
+
+# Use rofi para listar as imagens e permitir que o usuário selecione uma
+selected_image=$(find "$wallpaper_folder" -type f -iname "*.jpg" -o -iname "*.png" | rofi -dmenu -p "Escolha o wallpaper:" -m -4 -modi 'window,drun,ssh,combi' -font 'CaskaydiaMono Nerd Font 14' -show drun -icon-theme 'Papirus-Dark' -show-icons -theme $arquivo)
+
+# Se uma imagem foi selecionada
+if [ -n "$selected_image" ]; then
+    # Use feh para definir a imagem como wallpaper
+    feh --bg-scale "$selected_image"
+else
+    echo "Nenhuma imagem selecionada."
+fi
+3

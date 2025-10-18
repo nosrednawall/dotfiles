@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f $arquivo_modo ]; then
+    source $arquivo_modo
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
+# Carrega as cores do tema
+source ~/.theme_selected
+
+# carrega informacoes
+percent_used=$(df -h | grep -E '[/]$' | awk '{print$5}' | sed 's/%//')
+
+# Saída formatada
+
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+        echo ""
+    ;;
+    "MEDIO")
+        echo ""
+    ;;
+    *)
+    echo "^b$COLOR_5^^c$COLOR_BACKGROUND^ 󰋊 ^d^ ^c$COLOR_5^$percent_used%^d^  "
+    ;;
+esac

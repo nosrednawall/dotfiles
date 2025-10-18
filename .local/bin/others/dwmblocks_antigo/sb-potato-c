@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# Carrega as cores do tema
+source ~/.theme_selected
+
+# funcoes cliclaveis
+case $BUTTON in
+    1) potctl -t ;;
+    3) $HOME/.config/suckless/scripts/dmenu/dmenu-pomodoro ;;
+    4) potctl -i ;;
+    5) potctl -d ;;
+	6) setsid -f st -e emacs -nw "$0" ;;
+    8) potctl -s ;;
+    9) potctl -I ;;
+    10) potctl -D ;;
+esac
+
+# Verifica se tem algum pomodoro rodando
+PID_pomodoro=$(potctl | awk '{print$2}' | tail -1)
+if [[ -z "$PID_pomodoro" ]]; then
+    echo ""
+else
+    # Coleta informacoes nesse segundo
+    pomodoro_minutos=$(potctl -1 | awk '{print$2}')
+    pomodoro_modo=$(potctl -1 | awk '{print$1}')
+    pomodoro_cont=$(potctl -1 | awk '{print$4}')
+    pomodoro_pause=$(potctl | awk '{print$4}' | tail -1)
+
+    # Verifica o modo em que o pomodoro esta, e classifica o icone e a cor com base nisso
+    case $pomodoro_modo in
+        "PM")
+            icone="󱎫 "
+            color="^c$COLOR_3^"
+        ;;
+        "SB")
+            icone=" "
+            color="^c$COLOR_5^"
+        ;;
+        "LB")
+            icone=" "
+            color="^c$COLOR_6^"
+        ;;
+    esac
+
+    # Altera o icone quando o pomodoro esta pausado
+    if [ "$pomodoro_pause" = "Yes" ]; then
+        icone="󱫞 "
+        color="^c$COLOR_1^"
+    fi
+
+    # Gera notificacao quando muda de modo
+    if [ "24:59" = "$pomodoro_minutos" ] && [ "PM" = "$pomodoro_modo" ]; then
+        notify-send -t 3000 "Pomodoro Inicio" "Iniciado Pomodoro 25min" --icon="/usr/share/icons/ePapirus/24x24/panel/pomodoro-start-light.svg"
+    fi
+
+    if [ "04:59" = "$pomodoro_minutos" ] && [ "SB" = "$pomodoro_modo" ]; then
+        notify-send -t 3000 "Pomodoro Pausa Curta" "Iniciado Pausa curta 5m" --icon="/usr/share/icons/ePapirus/24x24/panel/pomodoro-start-light.svg"
+    fi
+
+    if [ "14:59" = "$pomodoro_minutos" ] && [ "LB" = "$pomodoro_modo" ]; then
+        notify-send -t 3000 "Pomodoro Pausa Longa" "Iniciado Pausa longa 15min" --icon="/usr/share/icons/ePapirus/24x24/panel/pomodoro-start-light.svg"
+    fi
+
+    # Gera som quando finaliza o modo
+    if [ "00:01" = "$pomodoro_minutos" ]; then
+        # ffplay -nodisp -autoexit -t 3 /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga &
+        $HOME/.config/suckless/scripts/others/som
+    fi
+
+    # retorno no dwmblocks
+    echo "$color$icone^d^$pomodoro_minutos $color ^d^$pomodoro_cont  "
+fi
+
+exit 0

@@ -1,0 +1,548 @@
+#!/bin/bash
+
+# Lê o nome da distribuição a partir do arquivo /etc/os-release
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    case "$ID" in
+        arch)
+            sudo_askpass="/usr/lib/ssh/gnome-ssh-askpass3"
+            ;;
+        debian)
+            sudo_askpass="/usr/bin/ssh-askpass"
+            ;;
+        *)
+            echo "Sistema desconhecido ou não suportado: $ID"
+            ;;
+    esac
+else
+    echo "Não foi possível determinar a distribuição. O arquivo /etc/os-release não existe."
+fi
+
+solarized_dark="  Solarized Dark"
+solarized_light="  Solarized Light"
+gruvbox_dark="  Gruvbox Dark"
+gruvbox_light="  Gruvbox Light"
+catppuccin_dark="  Catppuccin Dark"
+catppuccin_light="  Catppuccin Light"
+nordic_dark="  Nord Dark"
+nordic_light="  Nord Light"
+dracula_dark="  Dracula Dark"
+dracula_light="  Dracula Light"
+vaporwave_dark="  Vaporwave Dark"
+vaporwave_light="  Vaporwave Light"
+pywal_wallpaper_atual_dark="  Wallpaper Atual Dark"
+pywal_wallpaper_aleatorio_dark="  Wallpaper Aleatório Dark"
+pywal_wallpaper_atual_light="  Wallpaper Atual Light"
+pywal_wallpaper_aleatorio_light="  Wallpaper Aleatório Light"
+
+pywal_flag="0"
+
+# Variable passed to dmenu
+options="Pywal: \n$pywal_wallpaper_atual_dark\n$pywal_wallpaper_aleatorio_dark\n$pywal_wallpaper_atual_light\n$pywal_wallpaper_aleatorio_light\nDark :\n$catppuccin_dark\n$dracula_dark\n$gruvbox_dark\n$nordic_dark\n$solarized_dark\n$vaporwave_dark\nLight :\n$catppuccin_light\n$dracula_light\n$gruvbox_light\n$nordic_light\n$solarized_light\n$vaporwave_light"
+
+chosen="$(echo -e "$options" | dmenu -p "Tema menu " )"
+case $chosen in
+
+    $pywal_wallpaper_aleatorio_dark)
+        pywal_flag="1"
+        bash $HOME/.config/suckless/scripts/others/pywal-execute "dark"
+        pywal_wallpaper="$(cat ~/.cache/wal/colors.json | jq -r '.wallpaper')"
+
+        THEME_GTK="Colloid-Dark";
+        THEME_ICON="Numix-Circle";
+        THEME_MODE="Pywal";
+        COLOR_MODE="Dark";
+        GTK_PREFER_DARK_MODE=1;
+        EMACS_THEME="doom-one";
+        WALLPAPER_LIGHTDM="$(basename pywal_wallpaper)";
+
+        COLOR_BACKGROUND="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
+        COLOR_TEXT="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color7')"
+        COLOR_1="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color1')"   # Yellow
+        COLOR_2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color2')"   # Orange
+        COLOR_3="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color3')"   # Red
+        COLOR_4="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color4')"   # Magenta
+        COLOR_5="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color5')"   # Violet
+        COLOR_6="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color6')"   # Blue
+        COLOR_7="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color8')"   # Green
+        COLOR_8="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color9')"   # Cyan
+    ;;
+    $pywal_wallpaper_atual_dark)
+        pywal_flag="1"
+        pywal_wallpaper=$(grep -oP "'\K[^']+(?=')" ~/.fehbg)
+
+        bash $HOME/.config/suckless/scripts/others/pywal-execute "dark" "${wallpaper}"
+
+        THEME_GTK="Colloid-Dark";
+        THEME_ICON="Numix-Circle";
+        THEME_MODE="Pywal";
+        COLOR_MODE="Dark";
+        GTK_PREFER_DARK_MODE=1;
+        EMACS_THEME="doom-one";
+        WALLPAPER_LIGHTDM="$(basename pywal_wallpaper)";
+
+        COLOR_BACKGROUND="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
+        COLOR_TEXT="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color7')"
+        COLOR_1="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color1')"   # Yellow
+        COLOR_2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color2')"   # Orange
+        COLOR_3="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color3')"   # Red
+        COLOR_4="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color4')"   # Magenta
+        COLOR_5="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color5')"   # Violet
+        COLOR_6="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color6')"   # Blue
+        COLOR_7="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color8')"   # Green
+        COLOR_8="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color9')"   # Cyan
+    ;;
+    $pywal_wallpaper_aleatorio_light)
+        pywal_flag="1"
+        bash $HOME/.config/suckless/scripts/others/pywal-execute "light"
+        pywal_wallpaper="$(cat ~/.cache/wal/colors.json | jq -r '.wallpaper')"
+
+        THEME_GTK="Colloid-Dark";
+        THEME_ICON="Numix-Circle";
+        THEME_MODE="Pywal";
+        COLOR_MODE="Light";
+        GTK_PREFER_DARK_MODE=1;
+        EMACS_THEME="doom-one";
+        WALLPAPER_LIGHTDM="$(basename pywal_wallpaper)";
+
+        COLOR_BACKGROUND="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
+        COLOR_TEXT="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color7')"
+        COLOR_1="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color1')"   # Yellow
+        COLOR_2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color2')"   # Orange
+        COLOR_3="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color3')"   # Red
+        COLOR_4="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color4')"   # Magenta
+        COLOR_5="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color5')"   # Violet
+        COLOR_6="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color6')"   # Blue
+        COLOR_7="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color8')"   # Green
+        COLOR_8="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color9')"   # Cyan
+    ;;
+    $pywal_wallpaper_atual_light)
+        pywal_flag="1"
+        pywal_wallpaper=$(grep -oP "'\K[^']+(?=')" ~/.fehbg)
+
+        bash $HOME/.config/suckless/scripts/others/pywal-execute "light" "${wallpaper}"
+
+        THEME_GTK="Colloid-Dark";
+        THEME_ICON="Numix-Circle";
+        THEME_MODE="Pywal";
+        COLOR_MODE="Light";
+        GTK_PREFER_DARK_MODE=1;
+        EMACS_THEME="doom-one";
+        WALLPAPER_LIGHTDM="$(basename pywal_wallpaper)";
+
+        COLOR_BACKGROUND="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color0')"
+        COLOR_TEXT="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color7')"
+        COLOR_1="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color1')"   # Yellow
+        COLOR_2="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color2')"   # Orange
+        COLOR_3="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color3')"   # Red
+        COLOR_4="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color4')"   # Magenta
+        COLOR_5="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color5')"   # Violet
+        COLOR_6="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color6')"   # Blue
+        COLOR_7="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color8')"   # Green
+        COLOR_8="$(cat ~/.cache/wal/colors.json | jq -r '.colors.color9')"   # Cyan
+    ;;
+    $solarized_dark)
+
+        THEME_GTK="NumixSolarizedDarkCyan";
+        THEME_ICON="Numix-Circle";
+        THEME_MODE="Solarized";
+        COLOR_MODE="Dark";
+        GTK_PREFER_DARK_MODE=1;
+        EMACS_THEME="doom-solarized-dark";
+        WALLPAPER_LIGHTDM="LbI3B9z.jpeg";
+
+        COLOR_BACKGROUND="#002b36";
+        COLOR_TEXT="#839496";
+        COLOR_1="#b58900";
+        COLOR_2="#cb4b16";
+        COLOR_3="#dc322f";
+        COLOR_4="#d33682";
+        COLOR_5="#6c71c4";
+        COLOR_6="#268bd2";
+        COLOR_7="#859900";
+        COLOR_8="#2aa198";
+
+    ;;
+    $solarized_light)
+        THEME_GTK="NumixSolarizedLightCyan"
+        THEME_ICON="Numix-Circle-Light"
+        THEME_MODE="Solarized"
+        COLOR_MODE="Light"
+        GTK_PREFER_DARK_MODE=0
+        EMACS_THEME="doom-solarized-light"
+        WALLPAPER_LIGHTDM="burst-light.png"
+
+        COLOR_BACKGROUND="#fdf6e3"
+        COLOR_TEXT="#657b83"
+        COLOR_1="#b58900"   # Yellow
+        COLOR_2="#cb4b16"   # Orange
+        COLOR_3="#dc322f"   # Red
+        COLOR_4="#d33682"   # Magenta
+        COLOR_5="#6c71c4"   # Violet
+        COLOR_6="#268bd2"   # Blue
+        COLOR_7="#859900"   # Green
+        COLOR_8="#2aa198"   # Cyan
+
+    ;;
+    $gruvbox_dark)
+
+        THEME_GTK="Gruvbox-Material-Dark"
+        THEME_ICON="Numix-Circle"
+        THEME_MODE="Gruvbox"
+        COLOR_MODE="Dark"
+        GTK_PREFER_DARK_MODE=1
+        EMACS_THEME="doom-gruvbox"
+        WALLPAPER_LIGHTDM="wallhaven-jxl8mw.jpg"
+
+        COLOR_BACKGROUND="#282828"
+        COLOR_TEXT="#ebdbb2"
+        COLOR_1="#d79921"   # Yellow
+        COLOR_2="#fe8019"   # Orange
+        COLOR_3="#fb4934"   # Red
+        COLOR_4="#d3869b"   # Magenta
+        COLOR_5="#83a598"   # Blue
+        COLOR_6="#8ec07c"   # Aqua/Cyan
+        COLOR_7="#b8bb26"   # Green
+        COLOR_8="#928374"   # Gray
+
+    ;;
+    $gruvbox_light)
+
+        THEME_GTK="Gruvbox-Plus-Light"
+        THEME_ICON="Numix-Circle-Light"
+        THEME_MODE="Gruvbox"
+        COLOR_MODE="Light"
+        GTK_PREFER_DARK_MODE=0
+        EMACS_THEME="doom-gruvbox-light"
+        WALLPAPER_LIGHTDM="gruv-takumi-drift.png"
+
+        COLOR_BACKGROUND="#fbf1c7"
+        COLOR_TEXT="#3c3836"
+        COLOR_1="#b57614"   # Yellow
+        COLOR_2="#af3a03"   # Orange
+        COLOR_3="#9d0006"   # Red
+        COLOR_4="#8f3f71"   # Magenta
+        COLOR_5="#076678"   # Blue
+        COLOR_6="#427b58"   # Aqua/Cyan
+        COLOR_7="#79740e"   # Green
+        COLOR_8="#928374"   # Gray
+
+    ;;
+    $catppuccin_dark)
+
+        THEME_GTK="Catppuccin-Frappe-Standard-Pink-Dark"
+        THEME_ICON="Numix-Circle"
+        THEME_MODE="Catppuccin"
+        COLOR_MODE="Dark"
+        GTK_PREFER_DARK_MODE=1
+        EMACS_THEME='catppuccin) (setq catppuccin-flavor '"'"'frappe'
+        WALLPAPER_LIGHTDM="CatppuccinMocha-Planets.png"
+
+        COLOR_BACKGROUND="#303446"
+        COLOR_TEXT="#c6d0f5"
+        COLOR_1="#e5c890"   # Yellow
+        COLOR_2="#ef9f76"   # Orange
+        COLOR_3="#e78284"   # Red
+        COLOR_4="#ca9ee6"   # Magenta
+        COLOR_5="#8caaee"   # Blue
+        COLOR_6="#81c8be"   # Aqua/Cyan
+        COLOR_7="#a6d189"   # Green
+        COLOR_8="#b5bfe2"   # Gray
+
+    ;;
+    $catppuccin_light)
+
+        THEME_GTK="Catppuccin-Latte-Standard-Sapphire-Light"
+        THEME_ICON="Numix-Circle-Light"
+        THEME_MODE="Catppuccin"
+        COLOR_MODE="Light"
+        GTK_PREFER_DARK_MODE=0
+        EMACS_THEME='catppuccin) (setq catppuccin-flavor '"'"'latte'
+        WALLPAPER_LIGHTDM="wp11912478-catppuccin-wallpapers.png"
+
+        COLOR_BACKGROUND="#eff1f5"
+        COLOR_TEXT="#4c4f69"
+        COLOR_1="#df8e1d"   # Yellow
+        COLOR_2="#ea76cb"   # Pink
+        COLOR_3="#d20f39"   # Red
+        COLOR_4="#8839ef"   # Magenta
+        COLOR_5="#1e66f5"   # Blue
+        COLOR_6="#04a5e5"   # Aqua/Cyan
+        COLOR_7="#40a02b"   # Green
+        COLOR_8="#7287fd"   # Violet
+
+    ;;
+    $nordic_dark)
+
+        THEME_GTK="Nordic-darker-v40"
+        THEME_ICON="Numix-Circle"
+        THEME_MODE="Nord"
+        COLOR_MODE="Dark"
+        GTK_PREFER_DARK_MODE=1
+        EMACS_THEME="doom-nord"
+        WALLPAPER_LIGHTDM="ign_unsplash15.png"
+
+        COLOR_BACKGROUND="#2e3440"
+        COLOR_TEXT="#d8dee9"
+        COLOR_1="#ebcb8b"   # Yellow
+        COLOR_2="#d08770"   # Orange
+        COLOR_3="#bf616a"   # Red
+        COLOR_4="#b48ead"   # Magenta
+        COLOR_5="#81a1c1"   # Blue
+        COLOR_6="#88c0d0"   # Aqua/Cyan
+        COLOR_7="#a3be8c"   # Green
+        COLOR_8="#4c566a"   # Gray
+
+    ;;
+    $nordic_light)
+
+        THEME_GTK="Nordic-Polar-v40"
+        THEME_ICON="Numix-Circle-Light"
+        THEME_MODE="Nord"
+        COLOR_MODE="Light"
+        GTK_PREFER_DARK_MODE=0
+        EMACS_THEME="doom-nord-light"
+        WALLPAPER_LIGHTDM="ign_sunAndClouds.png"
+
+        COLOR_BACKGROUND="#eceff4"
+        COLOR_TEXT="#2e3440"
+        COLOR_1="#b48ead"   # Yellow
+        COLOR_2="#d08770"   # Orange
+        COLOR_3="#bf616a"   # Red
+        COLOR_4="#5e81ac"   # Magenta
+        COLOR_5="#81a1c1"   # Blue
+        COLOR_6="#88c0d0"   # Aqua/Cyan
+        COLOR_7="#a3be8c"   # Green
+        COLOR_8="#4c566a"   # Gray
+
+	;;
+
+    $dracula_dark)
+
+        THEME_GTK="Dracula"
+        THEME_ICON="Numix-Circle"
+        THEME_MODE="Dracula"
+        COLOR_MODE="Dark"
+        GTK_PREFER_DARK_MODE=1
+        EMACS_THEME="doom-dracula"
+        WALLPAPER_LIGHTDM="base.png"
+
+        COLOR_BACKGROUND="#282a36"
+        COLOR_TEXT="#f8f8f2"
+        COLOR_1="#f1fa8c"   # Yellow
+        COLOR_2="#ffb86c"   # Orange
+        COLOR_3="#ff5555"   # Red
+        COLOR_4="#ff79c6"   # Magenta
+        COLOR_5="#bd93f9"   # Blue
+        COLOR_6="#8be9fd"   # Aqua/Cyan
+        COLOR_7="#50fa7b"   # Green
+        COLOR_8="#6272a4"   # Gray
+
+    ;;
+    $dracula_light)
+
+        THEME_GTK="Yaru-Pink-light"
+        THEME_ICON="Numix-Circle-Light"
+        THEME_MODE="Dracula"
+        COLOR_MODE="Light"
+        GTK_PREFER_DARK_MODE=0
+        EMACS_THEME="doom-one-light"
+        WALLPAPER_LIGHTDM="dracula-galaxy-6272a4.png"
+
+        COLOR_BACKGROUND="#f8f8f2"
+        COLOR_TEXT="#282a36"
+        COLOR_1="#f1fa8c"   # Yellow
+        COLOR_2="#ffb86c"   # Orange
+        COLOR_3="#ff5555"   # Red
+        COLOR_4="#ff79c6"   # Magenta
+        COLOR_5="#bd93f9"   # Blue
+        COLOR_6="#8be9fd"   # Aqua/Cyan
+        COLOR_7="#50fa7b"   # Green
+        COLOR_8="#6272a4"   # Gray
+
+	;;
+    $vaporwave_dark)
+
+        THEME_GTK="retrowave-glow"
+        THEME_ICON="candy-icons"
+        THEME_MODE="Vaporwave"
+        COLOR_MODE="Dark"
+        GTK_PREFER_DARK_MODE=1
+        EMACS_THEME="rebecca"
+        WALLPAPER_LIGHTDM="vaporwave005.jpg"
+
+        COLOR_BACKGROUND="#2e1a47"
+        COLOR_TEXT="#d8d8d8"
+        COLOR_1="#ff77ff"   # Pink
+        COLOR_2="#9c64e8"   # Purple
+        COLOR_3="#ff6c6c"   # Light Red
+        COLOR_4="#ff5a8f"   # Magenta
+        COLOR_5="#7ec8ff"   # Light Blue
+        COLOR_6="#84e1f2"   # Cyan
+        COLOR_7="#76ff7f"   # Light Green
+        COLOR_8="#b8a4c9"   # Light Gray
+
+    ;;
+    $vaporwave_light)
+
+
+        THEME_GTK="Lavanda-Light"
+        THEME_ICON="Numix-Circle-Light"
+        THEME_MODE="Vaporwave"
+        COLOR_MODE="Light"
+        GTK_PREFER_DARK_MODE=0
+        EMACS_THEME="rebecca"
+        WALLPAPER_LIGHTDM="vaporwave009.jpg"
+
+        COLOR_BACKGROUND="#f9f1fa"
+        COLOR_TEXT="#2e1a47"
+        COLOR_1="#ff77ff"   # Pink
+        COLOR_2="#9c64e8"   # Purple
+        COLOR_3="#ff6c6c"   # Light Red
+        COLOR_4="#ff5a8f"   # Magenta
+        COLOR_5="#7ec8ff"   # Light Blue
+        COLOR_6="#84e1f2"   # Cyan
+        COLOR_7="#76ff7f"   # Light Green
+        COLOR_8="#b8a4c9"   # Light Gray
+
+	;;
+
+    *)
+        exit 0
+    ;;
+esac
+
+if [[ -z $chosen ]]; then
+    exit 0
+else
+    # Arquivo variavel
+#    sed -i "s|^export THEME_MODE=.*|export THEME_MODE=\"$THEME_MODE\"|" ~/.theme_selected
+#    sed -i "s|^export COLOR_MODE=.*|export COLOR_MODE=\"$COLOR_MODE\"|" ~/.theme_selected
+    rm -rf ~/.theme_selected
+    cat > ~/.theme_selected << EOF
+#!/bin/bash
+THEME_MODE="$THEME_MODE"
+COLOR_MODE="$COLOR_MODE"
+COLOR_BACKGROUND="$COLOR_BACKGROUND"
+COLOR_TEXT="$COLOR_TEXT"
+COLOR_1="$COLOR_1"   # Pink
+COLOR_2="$COLOR_2"   # Purple
+COLOR_3="$COLOR_3"   # Light Red
+COLOR_4="$COLOR_4"   # Magenta
+COLOR_5="$COLOR_5"   # Light Blue
+COLOR_6="$COLOR_6"   # Cyan
+COLOR_7="$COLOR_7"   # Light Green
+COLOR_8="$COLOR_8"   # Light Gray
+EOF
+
+    # Altero as configuracoes do gtk
+    # GTK2
+    sed -i "s/^gtk-icon-theme-name =.*/gtk-icon-theme-name = \"$THEME_ICON\"/" ~/.config/gtk-2.0/gtkrc
+    sed -i "s/^gtk-theme-name =.*/gtk-theme-name = \"$THEME_GTK\"/" ~/.config/gtk-2.0/gtkrc
+
+    sed -i "s/^gtk-icon-theme-name=.*/gtk-icon-theme-name=\"$THEME_ICON\"/" ~/.gtkrc-2.0
+    sed -i "s/^gtk-theme-name=.*/gtk-theme-name=\"$THEME_GTK\"/" ~/.gtkrc-2.0
+
+    # GTK3
+    sed -i "s/^gtk-theme-name=.*/gtk-theme-name=$THEME_GTK/" ~/.config/gtk-3.0/settings.ini
+    sed -i "s/^gtk-icon-theme-name=.*/gtk-icon-theme-name=$THEME_ICON/" ~/.config/gtk-3.0/settings.ini
+    sed -i "s/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=$GTK_PREFER_DARK_MODE/" ~/.config/gtk-3.0/settings.ini
+
+    #Flatpak
+    SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo flatpak override --filesystem=$HOME/.themes
+    SUDO_ASKPASS="$sudo_askpass" sudo flatpak override --env=GTK_THEME=$THEME_GTK
+
+    # Suckless
+    sed -i "s|^#include \"themes/.*|#include \"themes/${THEME_MODE,,}_${COLOR_MODE,,}.h\"|" ~/.config/suckless/dwm/config.def.h
+    sed -i "s|^#include \"themes/.*|#include \"themes/${THEME_MODE,,}_${COLOR_MODE,,}.h\"|" ~/.config/suckless/st/config.def.h
+    sed -i "s|^#include \"themes/.*|#include \"themes/${THEME_MODE,,}_${COLOR_MODE,,}.h\"|" ~/.config/suckless/dmenu/config.def.h
+    sed -i "s|^#include \"themes/.*|#include \"themes/${THEME_MODE,,}_${COLOR_MODE,,}.h\"|" ~/.config/suckless/slock/config.def.h
+
+    # Emacs Doom
+    sed -i "s|(setq doom-theme .*)|(setq doom-theme '$EMACS_THEME)|" ~/.config/doom/config.el
+
+    # Btop
+    sed -i "s|^color_theme =.*|color_theme = \"${THEME_MODE,,}_${COLOR_MODE,,}\"|" ~/.config/btop/btop.conf
+
+    # Lightdm
+    SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo cp -r ~/.icons/$THEME_ICON /usr/share/icons/
+    SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo cp -r ~/.themes/$THEME_GTK /usr/share/themes/
+
+    # Copia o wallpaper para ser usado pelo o slock e lightdm
+    if [ "$pywal_flag" = "1"  ]; then
+        SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo cp -r $pywal_wallpaper /usr/share/images/desktop-base/$WALLPAPER_LIGHTDM
+    else
+        SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo cp -r ~/.wallpapers/$THEME_MODE/$COLOR_MODE/$WALLPAPER_LIGHTDM /usr/share/images/desktop-base/$WALLPAPER_LIGHTDM
+    fi
+
+    SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo rm /etc/lightdm/lightdm-gtk-greeter.conf
+
+    SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo bash -c "cat > /etc/lightdm/lightdm-gtk-greeter.conf << EOF
+[greeter]
+background=/usr/share/images/desktop-base/$WALLPAPER_LIGHTDM
+theme-name=$THEME_GTK
+cursor-theme-name=capitaine-cursors-gruvbox-white
+icon-theme-name=$THEME_ICON
+default-user-image=/var/lib/AccountsService/icons/default.png
+indicators=~a11y;~language;~spacer;~host;~clock;~spacer;~session;~power;
+EOF"
+
+    # Slock
+    SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo rm -rf /usr/share/images/desktop-base/wallpaper-slock
+    SUDO_ASKPASS=/usr/bin/ssh-askpsas sudo ln -s /usr/share/images/desktop-base/$WALLPAPER_LIGHTDM /usr/share/images/desktop-base/wallpaper-slock
+
+   # Abre o dunst com o tema certo
+    source $HOME/.theme_selected
+    killall dunst
+    dunst -conf "$HOME/.config/dunst/themes/${THEME_MODE}_${COLOR_MODE}" &
+    dunstify "Aplicando tema" "Aguarde.." -h int:value:10  -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
+
+    # Fecha programas systray
+    killall copyq
+    killall solaar
+    killall slock
+
+    # Compila dwm
+    cd $HOME/.config/suckless/dwm
+    rm config.h
+    make
+    SUDO_ASKPASS="$sudo_askpass" sudo make clean install
+
+    dunstify "Aplicando tema" "Aguarde.." -h int:value:40 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
+
+    # Compila st
+    cd $HOME/.config/suckless/st
+    rm config.h
+    make
+    SUDO_ASKPASS="$sudo_askpass" sudo make clean install
+
+    dunstify "Aplicando tema" "Aguarde.." -h int:value:60 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
+
+    # Compila dmenu
+    cd $HOME/.config/suckless/dmenu
+    rm config.h
+    make
+    SUDO_ASKPASS="$sudo_askpass" sudo make clean install
+
+    # Compila slock
+    cd $HOME/.config/suckless/slock
+    rm config.h
+    make
+    SUDO_ASKPASS="$sudo_askpass" sudo make clean install
+
+    dunstify "Aplicando tema" "Aguarde.." -h int:value:80 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
+    sleep 0.8
+    # Faz sincronizacao do doom
+    #$HOME/.config/emacs/bin/doom sync
+
+    dunstify "Aplicando tema" "Aguarde.." -h int:value:99 -i /usr/share/icons/ePapirus/16x16/status/package-reinstall.svg
+
+    # Aplica wallpaper aleatorio para o tema selecionado
+    if [ "$pywal_flag" = "0" ]; then
+        feh --recursive --bg-fill --randomize $(find ~/.wallpapers/${THEME_MODE}/${COLOR_MODE}/ -type f \( -iname \*.jpg -o -iname \*.png -o -iname \*.jpeg \) | shuf -n 1) &
+    fi
+    # Restart dwm
+    xdotool key Control+alt+r
+
+    dunstify "Pronto" "Aplicação do tema finalizado!!!" -h int:value:100 -i /usr/share/icons/ePapirus/16x16/status/package-install.svg
+fi

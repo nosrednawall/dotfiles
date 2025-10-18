@@ -1,0 +1,266 @@
+#!/bin/bash
+
+PLAYER_SELECIONADO=""
+
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f "$arquivo_modo" ]; then
+    source "$arquivo_modo"
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
+# Carrega as cores do tema
+if [ -f ~/.theme_selected ]; then
+    source ~/.theme_selected
+fi
+
+if [ -f ~/.cache/playerctl_selecionado ]; then
+    source ~/.cache/playerctl_selecionado
+fi
+
+# Funcao para mudar o player
+fchange_player() {
+    direction="$1"
+    if [[ "$direction" != "+1" && "$direction" != "-1" ]]; then
+        return 1
+    fi
+
+    # Obtém a lista de players ativos
+    players=( $(playerctl -l 2>/dev/null) )
+    if [ ${#players[@]} -eq 0 ]; then
+        PLAYER_SELECIONADO="mpd"
+        echo "PLAYER_SELECIONADO=$PLAYER_SELECIONADO" > ~/.cache/playerctl_selecionado
+        return 0
+    fi
+
+    # Carrega o player atualmente selecionado
+    current_index=0
+    for i in "${!players[@]}"; do
+        if [[ "${players[i]}" == "$PLAYER_SELECIONADO" ]]; then
+            current_index=$i
+            break
+        fi
+    done
+
+    # Calcula o próximo índice
+    if [[ "$direction" == "+1" ]]; then
+        next_index=$(( (current_index + 1) % ${#players[@]} ))
+    else
+        next_index=$(( (current_index - 1 + ${#players[@]}) % ${#players[@]} ))
+    fi
+
+    PLAYER_SELECIONADO="${players[next_index]}"
+    echo "PLAYER_SELECIONADO=$PLAYER_SELECIONADO" > ~/.cache/playerctl_selecionado
+    return 0
+}
+
+# Função para verificar e atualizar o player selecionado
+atualizar_player_selecionado() {
+    local players=( $(playerctl -l 2>/dev/null) )
+
+    # Se não há players, usa mpd
+    if [ ${#players[@]} -eq 0 ]; then
+        if [ "$PLAYER_SELECIONADO" != "mpd" ]; then
+            PLAYER_SELECIONADO="mpd"
+            echo "PLAYER_SELECIONADO=$PLAYER_SELECIONADO" > ~/.cache/playerctl_selecionado
+        fi
+        return
+    fi
+
+    # Verifica se o player atual existe
+    local player_existe=0
+    for player in "${players[@]}"; do
+        if [ "$player" = "$PLAYER_SELECIONADO" ]; then
+            player_existe=1
+            break
+        fi
+    done
+
+    if [ $player_existe -eq 0 ]; then
+        fchange_player +1
+        return
+    fi
+
+    # Verifica se há algum player tocando
+    local status_atual
+    if status_atual=$(playerctl --player="$PLAYER_SELECIONADO" status 2>/dev/null); then
+        if [ "$status_atual" != "Playing" ]; then
+            for player in "${players[@]}"; do
+                if player_status=$(playerctl --player="$player" status 2>/dev/null); then
+                    if [ "$player_status" = "Playing" ]; then
+                        PLAYER_SELECIONADO="$player"
+                        echo "PLAYER_SELECIONADO=$PLAYER_SELECIONADO" > ~/.cache/playerctl_selecionado
+                        return
+                    fi
+                fi
+            done
+        fi
+    else
+        # Player atual não responde, muda para o próximo
+        fchange_player +1
+    fi
+}
+
+# Atualiza o player selecionado antes de qualquer ação
+atualizar_player_selecionado
+
+# Processa cliques primeiro
+case "${BUTTON:-0}" in
+    1)
+        # Play/Pause
+        if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
+            playerctl --player="$PLAYER_SELECIONADO" play-pause
+            # Pequena pausa para evitar múltiplas execuções
+            sleep 0.1
+        fi
+        ;;
+    2)
+        # Previous
+        if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
+            playerctl --player="$PLAYER_SELECIONADO" previous
+            sleep 0.1
+        fi
+        ;;
+    3)
+        # Next
+        if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
+            playerctl --player="$PLAYER_SELECIONADO" next
+            sleep 0.1
+        fi
+        ;;
+    4)
+        # Forward
+        if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
+            playerctl --player="$PLAYER_SELECIONADO" position 10+
+        fi
+        ;;
+    5)
+        # Backward
+        if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
+            playerctl --player="$PLAYER_SELECIONADO" position 10-
+        fi
+        ;;
+    6)
+        setsid -f st -e emacs -nw "$0"
+        ;;
+    8)
+        xsetroot -name "fsignal:togglescratch ui 6"
+        ;;
+    9)
+        fchange_player +1
+        ;;
+    10)
+        fchange_player -1
+        ;;
+esac
+
+# Atualiza novamente após ações
+atualizar_player_selecionado
+
+# Display currently playing music
+PLAYERS="--player=$PLAYER_SELECIONADO"
+
+# Ícones
+case "$PLAYER_SELECIONADO" in
+    "chromium.instance2")
+        icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_11^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        format_player="{{title}}"
+        ;;
+
+    "mpv")
+        icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_11^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        format_player="{{title}}"
+        ;;
+
+    "vlc")
+        icon="^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰕼 ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        format_player="{{title}}"
+        ;;
+
+    "mpd")
+        icon="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰝚 ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        format_player="{{title}}"
+        ;;
+
+    "spotube.instance2")
+        icon="^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        format_player="{{title}}"
+        ;;
+
+    "spotify")
+        icon="^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        format_player="{{title}}"
+        ;;
+    *)
+        icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_11^"
+        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
+        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        format_player="{{title}}"
+        ;;
+esac
+
+# Verifica status
+song=""
+icon_to_use="$icon_close"
+
+if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
+    status=$(playerctl --player="$PLAYER_SELECIONADO" status 2>/dev/null)
+
+    if [ "$status" = "Playing" ] || [ "$status" = "Paused" ]; then
+        if [ "$status" = "Paused" ]; then
+            icon_to_use="$icon_paused"
+        else
+            icon_to_use="$icon"
+        fi
+
+        song=$(playerctl --player="$PLAYER_SELECIONADO" metadata --format="$format_player" 2>/dev/null)
+
+        if [ -z "$song" ]; then
+            song=$(playerctl --player="$PLAYER_SELECIONADO" metadata xesam:url 2>/dev/null | sed 's/file:\/\///' | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))" 2>/dev/null | xargs -I {} basename "{}" 2>/dev/null)
+        fi
+
+        if [ -n "$song" ]; then
+            song=$(echo "$song" | tr -d ';')
+            if [ ${#song} -gt 17 ]; then
+                song="${song:0:17}..."
+            fi
+        fi
+    fi
+fi
+
+# Apresentacao condicionada
+case "${OPERATION_MODE:-COMPLETO}" in
+    "MINIMO")
+        echo ""
+        ;;
+    "MEDIO")
+        if [ -z "$song" ]; then
+            echo "$icon_close"
+        else
+            echo "$icon_to_use $song ^d^ "
+        fi
+        ;;
+    *)
+        if [ -z "$song" ]; then
+            echo "$icon_close "
+        else
+            echo "$icon_to_use $song ^d^ "
+        fi
+        ;;
+esac
+
+exit 0

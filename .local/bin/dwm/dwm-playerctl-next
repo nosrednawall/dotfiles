@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Carrega o player atual
+source ~/.cache/playerctl_selecionado
+
+# Roda o comando
+playerctl --player=$PLAYER_SELECIONADO next
+
+# Envia notificacao
+~/.local/bin/playerctl_songinfo
+
+# Atualiza dwmblocks
+kill -35 $(pidof dwmblocks)

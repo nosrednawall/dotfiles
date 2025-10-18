@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Diretório de imagens
+IMAGE_DIR="$HOME/.wallpapers/Aleatorios"
+IMAGE_LIST=$(ls "$IMAGE_DIR")
+
+# Mostrar opções no dmenu
+SELECTED_IMAGE=$(echo "$IMAGE_LIST" | dmenu -p "Escolha uma imagem:")
+
+if [ -n "$SELECTED_IMAGE" ]; then
+    IMAGE_PATH="$IMAGE_DIR/$SELECTED_IMAGE"
+
+    wal -i $IMAGE_PATH
+fi

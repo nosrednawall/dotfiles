@@ -1,26 +1,27 @@
 #!/bin/bash
-export PATH=/usr/local/bin:/usr/bin:/bin
 
-export PATH="$HOME/.config/emacs/bin:$PATH"
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.config/suckless/scripts/dmenu:$PATH"
-export PATH="$HOME/.config/suckless/scripts/dwm:$PATH"
-export PATH="$HOME/.config/suckless/scripts/dwmblocks:$PATH"
-export PATH="$HOME/.local/bin/mpd:$PATH"
-export PATH="/usr/local/bin:$PATH"
-export PATH="/usr/games:$PATH"
+# Carrega as configurações do Xresources
+xrdb ~/.Xresources
 
-export QT_QPA_PLATFORMTHEME=qt5ct
+# para a nvidia
+#xrandr --setprovideroutputsource modesetting NVIDIA-0
+#xrandr --auto
 
-# ~/.xprofile ou ~/.xinitrc
-#!/bin/bash
+# JAVA Bug
+if which wmname; then
+  wmname LG3D
+fi
+export AWT_TOOLKIT="MToolkit"
+export _JAVA_AWT_WM_NONREPARENTING="1"
+export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true"
 
-# Corrigir permissões dos scripts do dwmblocks
-chmod +x ~/.config/suckless/scripts/dmenu/*
-chmod +x ~/.config/suckless/scripts/dwm/*
-chmod +x ~/.config/suckless/scripts/dwmblocks/*
-chmod +x ~/.config/suckless/scripts/others/*
+# Para o virt manager
+export LIBVIRT_DEFAULT_URI='qemu:///system'
 
-# Garantir que a cache tenha permissões corretas
-mkdir -p ~/.cache
-chmod 755 ~/.cache
+# Exports para o path do dwm
+#export XDG_CURRENT_DESKTOP="DWM"
+#export DESKTOP_SESSION="dwm"
+#export GDK_BACKEND="x11"
+#export GTK_THEME="Adwaita"
+#export QT_QPA_PLATFORMTHEME="gtk2"
+#export MOZ_ENABLE_WAYLAND=0

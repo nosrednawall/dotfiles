@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Pergunta ao usuário se quer fechar todos os programas
+answer=$(echo -e "S - Sim\nN - Não " | dmenu -p "Quer fechar todos os programas?")
+
+# Verifica a resposta do usuário
+case $answer in
+
+"S - Sim")
+    # Fecha todos os programas listados com killall
+    killall chrome
+    killall thunar
+    notify-send "Todos os programas foram fechados."
+;;
+*)
+    notify-send "Nenhum programa foi fechado."
+;;
+esac

@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Opcoes
+start="Iniciar"
+skip="Pular etapa"
+pause="Pausar/Retomar Timer"
+reset="Reseta o timer"
+finish="Finalizar"
+
+# Verifica se possui pomodoro ativo
+PID_pomodoro=$(potctl | awk '{print$2}' | tail -1)
+if [[ -z "$PID_pomodoro" ]]; then
+	# Variable passed to dmenu
+	options="$start"
+else
+	# Variable passed to dmenu
+	options="$pause\n$skip\n$finish\n$reset"
+fi
+
+chosen="$(echo -e "$options" | dmenu -p "Comandos pomodoro" )"
+case $chosen in
+	 $start)
+		 potd &
+	 ;;
+	 $finish)
+		 potctl -q
+	 ;;
+	 $pause)
+		 potctl -t
+	 ;;
+	 $skip)
+		 potctl -s
+	 ;;
+	 $reset)
+		 potctl -r
+	 ;;
+esac

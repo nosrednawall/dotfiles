@@ -1,0 +1,117 @@
+#!/bin/bash
+
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f $arquivo_modo ]; then
+    source $arquivo_modo
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
+# Carrega o tema
+source ~/.theme_selected
+
+# Identifica os dispositivos de bateria e carregador
+DEVICE_CARREGADOR=$(ls /sys/class/power_supply/ | grep -m1 "ACAD")
+DEVICE_BATERIA=$(ls /sys/class/power_supply/ | grep -m1 "BAT")
+
+# Verifica se o carregador existe e está ligado
+if [[ -n "$DEVICE_CARREGADOR" ]] && [[ -e "/sys/class/power_supply/$DEVICE_CARREGADOR/online" ]]; then
+    is_plugged=$(cat "/sys/class/power_supply/$DEVICE_CARREGADOR/online")
+else
+    is_plugged=2 # Valor indicando ausência do carregador
+fi
+
+# Verifica se a bateria existe e obtém o nível de carga
+if [[ -n "$DEVICE_BATERIA" ]] && [[ -e "/sys/class/power_supply/$DEVICE_BATERIA/capacity" ]]; then
+    battery_level=$(cat "/sys/class/power_supply/$DEVICE_BATERIA/capacity")
+    BATTERY_PATH="/sys/class/power_supply/$DEVICE_BATERIA"
+
+    # Lê as informações da bateria
+    CHARGE_FULL_DESIGN=$(cat "$BATTERY_PATH/charge_full_design")  # Capacidade total da bateria nova (µAh)
+    CHARGE_FULL=$(cat "$BATTERY_PATH/charge_full")                # Capacidade total atual da bateria (µAh)
+    CHARGE_NOW=$(cat "$BATTERY_PATH/charge_now")                # Capacidade total atual da bateria (µAh)
+    VOLTAGE_NOW=$(cat "$BATTERY_PATH/voltage_now")               # Tensão atual (µV)
+    CAPACITY=$(cat "$BATTERY_PATH/capacity")                     # Capacidade atual (em porcentagem)
+    STATUS=$(cat "$BATTERY_PATH/status")                         # Status da bateria (Carregando, Descarregando, etc.)
+    CURRENT_NOW=$(cat "$BATTERY_PATH/current_now")               # Taxa de consumo atual (µA)
+
+    # Converte µAh para mAh e µV para V
+    CHARGE_FULL_DESIGN_mAh=$(echo "scale=2; $CHARGE_FULL_DESIGN / 1000" | bc)  # Capacidade total nova (mAh)
+    CHARGE_FULL_mAh=$(echo "scale=2; $CHARGE_FULL / 1000" | bc)                # Capacidade total atual (mAh)
+    CHARGE_NOW_mAh=$(echo "scale=2; $CHARGE_NOW / 1000" | bc)                # Capacidade total atual (mAh)
+    VOLTAGE=$(echo "scale=2; $VOLTAGE_NOW / 1000000" | bc)                    # Tensão atual (V)
+    CURRENT_mA=$(echo "scale=2; $CURRENT_NOW / 1000" | bc)                    # Taxa de consumo atual (mA)
+
+    # Calcula a perda da bateria
+    CHARGE_LOST_mAh=$(echo "scale=2; ($CHARGE_FULL_DESIGN - $CHARGE_FULL) / 1000" | bc)  # Perda em mAh
+    CHARGE_LOST_PERCENT=$(echo "scale=2; ($CHARGE_LOST_mAh / $CHARGE_FULL_DESIGN_mAh) * 100" | bc)  # Perda em porcentagem
+
+    # Calcula o tempo restante (para descarga ou carga)
+    if [ "$STATUS" = "Discharging" ] && [ $(echo "$CURRENT_mA > 0" | bc) -eq 1 ]; then
+        # Tempo restante para descarregar totalmente
+        TIME_REMAINING=$(echo "scale=2; $CHARGE_FULL_mAh / $CURRENT_mA" | bc)
+        TIME_REMAINING_FORMATTED="de carga $(date -u -d @$(echo "$TIME_REMAINING * 3600" | bc) +"%H:%M")h"
+    elif [ "$STATUS" = "Charging" ] && [ $(echo "$CURRENT_mA > 0" | bc) -eq 1 ]; then
+        # Tempo restante para carregar totalmente
+        CHARGE_REMAINING_mAh=$(echo "scale=2; $CHARGE_FULL_DESIGN_mAh - $CHARGE_FULL_mAh" | bc)
+        TIME_REMAINING=$(echo "scale=2; $CHARGE_REMAINING_mAh / $CURRENT_mA" | bc)
+        TIME_REMAINING_FORMATTED="de carregamento $(date -u -d @$(echo "$TIME_REMAINING * 3600" | bc) +"%H:%M")h"
+    else
+        TIME_REMAINING_FORMATTED="N/A"
+    fi
+else
+    battery_level=0 # Assume 0% se a bateria não for detectada
+fi
+
+# Define o ícone e a cor com base no estado do carregador e nível de bateria
+if [[ "$is_plugged" -eq 1 ]]; then
+    icon="^c$COLOR_7^"
+else
+    case $battery_level in
+        [0-30])   icon="^c$COLOR_3^" ;; # Bateria crítica
+        [31-40])  icon="^c$COLOR_2^" ;; # Bateria baixa
+        [41-60])  icon="^c$COLOR_1^" ;; # Bateria moderada
+        [61-90])  icon="^c$COLOR_7^" ;; # Bateria boa
+        *)        icon="^c$COLOR_8^" ;; # Bateria cheia
+    esac
+fi
+
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+        echo ""
+    ;;
+    *)
+        # Saída formatada
+        if [ $battery_level -gt 97 ]; then
+            echo "$icon ^d^ "
+        else
+            echo "$icon ^d^$battery_level  "
+        fi
+    ;;
+esac
+
+# Funções clicáveis
+case $BUTTON in
+    1)
+# Formata a mensagem
+MESSAGE="Status da Bateria:
+- Capacidade Atual: $CAPACITY%
+- Status: $STATUS
+- Tempo Restante $TIME_REMAINING_FORMATTED
+
+Informações da Bateria:
+- Tensão Atual: $VOLTAGE V
+- Capacidade Total Nova: $CHARGE_FULL_DESIGN_mAh mAh
+- Capacidade Total Atual: $CHARGE_FULL_mAh mAh
+- Capacidade Perdida: $CHARGE_LOST_mAh mAh ($CHARGE_LOST_PERCENT%)"
+
+        notify-send -i "$ICON" "Informações da Bateria" "$MESSAGE"
+    ;;
+    3) bash ~/.dotfiles/.local/bin/dmenu/dmenu-powertop ;;
+    6) setsid -f st -e emacs -nw "$0" ;;
+esac
+
+exit 0

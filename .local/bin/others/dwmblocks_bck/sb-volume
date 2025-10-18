@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f $arquivo_modo ]; then
+    source $arquivo_modo
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
+# Carrega as cores do tema
+source ~/.theme_selected
+
+# Display volume levels.
+case $BUTTON in
+	1) bash ~/.config/suckless/scripts/dwm/dwm-muta-volume ;;
+    2) bash ~/.config/suckless/scripts/dmenu/dmenu-controle-som ;;
+    #3) setsid -f st -e pulsemixer ;;
+    3) xsetroot -name "fsignal:togglescratch ui 3" ;;
+    4) bash ~/.config/suckless/scripts/dwm/dwm-aumenta-volume ;;
+    5) bash ~/.config/suckless/scripts/dwm/dwm-diminui-volume ;;
+	6) setsid -f st -e emacs -nw "$0" ;;
+esac
+
+
+muteVol=$(pactl get-sink-mute @DEFAULT_SINK@ | grep -E 'sim|yes' -ic)
+volume=$(pactl get-sink-volume @DEFAULT_SINK@ | grep "Volume" | awk '{print$5}' | sed 's/%//')
+
+if [ "$muteVol" -eq 1 ]; then
+^b$COLOR_3^^c$COLOR_BACKGROUND^ $iconRec ^d^^c$COLOR_3^ REC^d^
+    iconVolume="^b#4A5947^^c$COLOR_BACKGROUND^ 󰸈 ^d^^c#4A5947^ $volume^d^"
+else
+    if [ "$volume" -le 30 ]; then
+        iconVolume="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰕿 ^d^^c$COLOR_6^ $volume^d^"
+    elif [ "$volume" -le 60 ]; then
+        iconVolume="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰖀 ^d^^c$COLOR_6^ $volume^d^"
+    elif [ "$volume" -ge 61 ]; then
+        iconVolume="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰕾 ^d^^c$COLOR_6^ $volume^d^"
+    fi
+fi
+
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+        echo ""
+    ;;
+    "MEDIO")
+        echo ""
+    ;;
+    *)
+        echo "$iconVolume  "
+    ;;
+esac
+
+exit 0

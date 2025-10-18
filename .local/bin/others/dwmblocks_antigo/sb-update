@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f $arquivo_modo ]; then
+    source $arquivo_modo
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
+# Carrega as cores do tema
+source ~/.theme_selected
+
+# Lê o nome da distribuição a partir do arquivo /etc/os-release
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    case "$ID" in
+        arch)
+            updates=$(checkupdates | wc -l)
+            ;;
+
+        debian)
+            updates=$(apt list --upgradable 2>/dev/null | grep -c 'upgradable')
+            ;;
+        *)
+            echo "Sistema desconhecido ou não suportado: $ID"
+            ;;
+    esac
+else
+    echo "Não foi possível determinar a distribuição. O arquivo /etc/os-release não existe."
+fi
+
+icon="^c$COLOR_5^📦^d^"
+
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+        echo ""
+    ;;
+    *)
+        if [ "$updates" -eq 0 ]; then
+            echo "$icon 0  "
+        else
+            echo "$icon $updates  "
+            notify-send -i "/usr/share/icons/Adwaita/24x24/legacy/software-update-available.png" "󱧕 Atualização Disponível" "Existem <b>$updates</b> atualizações disponíveis, que são: \n$(checkupdates | sed 's/^/\t/')"
+        fi
+    ;;
+esac
+
+# funcoes cliclaveis
+case $BUTTON in
+    1) st -n "updates" -e sh -c "sudo pacman -Syuv ; kill -36 $(pidof dwmblocks)" & ;;
+    3) x-www-browser "https://flathub.org/" ;;
+    6) setsid -f st -e emacs -nw "$0" ;;
+esac
