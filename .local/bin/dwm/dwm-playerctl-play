@@ -13,4 +13,4 @@ fi
 ~/.local/bin/playerctl_songinfo
 
 # Atualiza dwmblocks
-kill -35 $(pidof dwmblocks)
+#kill -35 $(pidof dwmblocks)

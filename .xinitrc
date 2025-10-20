@@ -25,6 +25,8 @@ is_running() {
     ps aux | grep -v grep | grep -q "$1"
 }
 
+is_running "sxhkd" || sxhkd &
+
 # Polkit - para autenticar programas
 is_running "lxpolkit" || lxpolkit &
 
@@ -50,6 +52,6 @@ setxkbmap -model pc105 -layout br -variant abnt2
 # Abre o dwmblocks
 is_running "dwmblocks" || dwmblocks &
 
-env | sort > /tmp/xinitrc-env.txt
+# env | sort > /tmp/xinitrc-env.txt
 exec dwm
 # while true; do dwm 2> ~/.dwm.log; done

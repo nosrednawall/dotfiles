@@ -248,3 +248,19 @@
       "C-c C-a"     #'pdf-annot-add-highlight-markup-annotation
       "C-c C-n"     #'pdf-annot-add-text-annotation
       )
+
+
+;; Configurações de cursor para Emacs
+(when (eq window-system 'x)
+  ;; Definir o tema do cursor
+  (setq x-pointer-shape 'arrow
+        x-sensitive-text-pointer-shape 'hand
+        x-pointer-foreground-color "white"
+        x-pointer-background-color "black")
+  
+  ;; Para modo gráfico
+  (if (fboundp 'x-set-cursor)
+      (x-set-cursor 'arrow))
+  
+  ;; Tamanho do cursor
+  (setq x-pointer-size 16))

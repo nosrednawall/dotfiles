@@ -7,4 +7,4 @@ brilho=$(brightnessctl | awk '/%/ {print$4}' | cut -c 2-4 | sed 's/%//' | sed 's
 # Atualiza dwmblocks
 kill -42 $(pidof dwmblocks)
 
-notify-send -t 3000 "Brilho aumentado em +5%" "Brilho total $brilho%" --icon="/usr/share/icons/ePapirus/16x16/actions/brightnesssettings.svg"
+# notify-send -t 3000 "Brilho aumentado em +5%" "Brilho total $brilho%" --icon="/usr/share/icons/ePapirus/16x16/actions/brightnesssettings.svg"

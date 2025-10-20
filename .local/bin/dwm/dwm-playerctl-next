@@ -9,5 +9,5 @@ playerctl --player=$PLAYER_SELECIONADO next
 # Envia notificacao
 ~/.local/bin/playerctl_songinfo
 
-# Atualiza dwmblocks
-kill -35 $(pidof dwmblocks)
+# Atualiza dwmblocks   tem atualizao no playerctl_songinfo
+# kill -35 $(pidof dwmblocks)

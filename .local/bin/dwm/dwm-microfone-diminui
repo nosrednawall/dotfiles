@@ -6,4 +6,4 @@ volume=$(pactl get-source-volume @DEFAULT_SOURCE@ | grep "Volume" | awk '{print$
 # Atualiza dwmblocks
 kill -44 $(pidof dwmblocks)
 
-notify-send -t 3000 "Volume microfone $volume" "Diminuído 5% do volume do microfone" --icon="/usr/share/icons/ePapirus/16x16/devices/audio-input-microphone.svg"
+# notify-send -t 3000 "Volume microfone $volume" "Diminuído 5% do volume do microfone" --icon="/usr/share/icons/ePapirus/16x16/devices/audio-input-microphone.svg"

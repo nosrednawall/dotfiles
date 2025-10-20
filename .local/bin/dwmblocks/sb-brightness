@@ -12,8 +12,16 @@ fi
 # Carrega o tema
 source ~/.theme_selected
 
+temperatura=$(xrandr --verbose | awk '/Gamma/ {print $2}' | cut -d: -f3 | head -1)
+# Usando awk para comparação de floats
+if echo "$temperatura" | awk '{exit !($0 >= 1.1)}'; then
+    icone_redshift="^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰈈 ^d^"
+else
+    icone_redshift=""
+fi
+
 brilho=$(brightnessctl | awk '/%/ {print$4}' | cut -c 2-4 | sed 's/%//' | sed 's/)//')
-brilhoIcone="^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰃠 ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^ $brilho ^d^"
+brilhoIcone="$icone_redshift^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰃠 ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^ $brilho ^d^"
 
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
@@ -30,12 +38,9 @@ esac
 
 # funcoes cliclaveis
 case $BUTTON in
-    1) bash ~/.config/suckless/scripts/dwm/dwm-redshift.sh;;
     4) bash ~/.config/suckless/scripts/dwm/dwm-brilho-tela-aumenta ;;
     5) bash ~/.config/suckless/scripts/dwm/dwm-brilho-tela-diminui ;;
     6) setsid -f st -e emacs -nw "$0" ;;
-    9) bash ~/.config/suckless/scripts/dwm/dwm-redshift-aumenta.sh ;;
-    10) bash ~/.config/suckless/scripts/dwm/dwm-redshift-aumenta.sh ;;
 esac
 
 exit 0

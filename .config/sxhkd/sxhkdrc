@@ -1,0 +1,177 @@
+# ~/.config/sxhkd/sxhkdrc
+# Configuração equivalente às teclas do DWM personalizado
+
+# Modifiers
+super = Super_L|Super_R
+alt = Alt_L|Alt_R
+ctrl = Control_L|Control_R
+shift = Shift_L|Shift_R
+
+# =============================================
+# ATALHOS PERSONALIZADOS
+# =============================================
+
+# Bloqueio de tela
+ctrl + alt + l
+     slock
+
+# Layout de teclado
+super + k
+    ~/.local/bin/dwm/dwm-teclado-toggle
+
+# Toggle Conky
+super + l
+    ~/.local/bin/dwm/dwm-conky-toggle
+
+# =============================================
+# ÁUDIO E VOLUME
+# =============================================
+
+# Volume autofalantes
+XF86Audio{RaiseVolume,LowerVolume,Mute}
+    ~/.local/bin/dwm/dwm-volume-{aumenta,diminui,toggle}
+
+# Volume microfone
+ctrl + XF86Audio{RaiseVolume,LowerVolume,Mute}
+    ~/.local/bin/dwm/dwm-microfone-{aumenta,diminui,toggle}
+ 
+# =============================================
+# CONTROLE DE MÍDIA
+# =============================================
+
+XF86Audio{Play,Stop,Prev,Next}
+    ~/.local/bin/dwm/dwm-playerctl-{play,stop,prev,next}
+
+# =============================================
+# ATALHOS DE TECLADO MULTIMÍDIA
+# =============================================
+
+XF86HomePage
+    x-www-browser &
+
+XF86Mail
+    thunderbird &
+
+XF86Search
+    rofi -show drun
+
+XF86Calculator
+    qalculate-gtk &
+
+# =============================================
+# PRINTSCREEN
+# =============================================
+
+super + shift + s
+    ~/.local/bin/dwm/dwm-print-edita
+
+Print
+    ~/.local/bin/dwm/dwm-print-copia
+
+# =============================================
+# BRILHO E REDSHIFT
+# =============================================
+
+XF86MonBrightness{Up,Down}
+    ~/.local/bin/dwm/dwm-brilho-tela-{aumenta,diminui}
+
+ctrl + XF86MonBrightness{Up,Down}
+    ~/.local/bin/dwm/dwm-redshift-{aumenta,diminui,toggle}
+
+super + ctrl + {F9,F8,F7}
+    ~/.local/bin/dwm/dwm-redshift-{aumenta,diminui,toggle}
+
+# =============================================
+# MENUS DMENU
+# =============================================
+
+super + shift + e
+    ~/.local/bin/dmenu/dmenu-saida-sistema
+
+ctrl + alt + p
+    ~/.local/bin/dmenu/dmenu-pass
+
+super + shift + i
+    ~/.local/bin/dmenu/dmenu-wallpaper
+
+super + shift + w
+    ~/.local/bin/dmenu/dmenu-controle-monitor
+
+super + shift + a
+    ~/.local/bin/dmenu/dmenu-controle-som
+
+super + shift + l
+    ~/.local/bin/dmenu/dmenu-layouts-dwm
+
+super + shift + t
+    ~/.local/bin/dmenu/dmenu-tema
+
+super + shift + v
+    ~/.local/bin/dmenu/dmenu-vpn
+
+super + shift + m
+    ~/.local/bin/dmenu/dmenu-powertop
+
+super + shift + n
+    ~/.local/bin/dmenu/dmenu-nvidia-switch
+
+super + shift + k
+    ~/.local/bin/dmenu/dmenu-close-programs
+
+super + ctrl + l
+    ~/.local/bin/dmenu/dmenu-live-wallpaper
+
+super + shift + p
+    ~/.local/bin/dmenu/dmenu-player
+
+super + shift + r
+    ~/.local/bin/dmenu/dmenu-rec
+
+super + shift + h
+    ~/.local/bin/dmenu/dmenu-homelab
+
+super + shift + g
+    ~/.local/bin/dmenu/dmenu-pomodoro
+
+super + shift + d
+    ~/.local/bin/dmenu/dmenu-dwmblocks-operation
+
+super + shift + c
+    ~/.local/bin/dmenu/dmenu-docker
+
+# Bookmarks
+super + shift + b
+    ~/.local/bin/dmenu/dmenu-bookmark
+
+alt + shift + b
+    ~/.local/bin/dmenu/dmenu-bookmark private
+
+super + ctrl + b
+    ~/.local/bin/dmenu/dmenu-bookmark add
+
+super + ctrl + shift + b
+    ~/.local/bin/dmenu/dmenu-bookmark del
+
+# =============================================
+# ROFI E LAUNCHERS
+# =============================================
+
+super + d
+    ~/.local/bin/dwm/dwm-roficmd
+
+# =============================================
+# LANÇAMENTO DE PROGRAMAS
+# =============================================
+
+super + w
+    x-www-browser
+
+super + e
+    emacsclient -c -a 'emacs'
+
+super + f
+    pcmanfm
+
+# =============================================
+# REINICIAR/RECARREGAR
+# =============================================
