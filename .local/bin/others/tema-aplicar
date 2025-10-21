@@ -436,7 +436,7 @@ case $1 in
     $nordic_dark)
 
         THEME_GTK="Nordic-darker-v40"
-        THEME_ICON="Numix-Circle"
+        THEME_ICON="Zafiro-Nord-Black"
         THEME_MODE="Nord"
         COLOR_MODE="Dark"
         GTK_PREFER_DARK_MODE=1
@@ -660,6 +660,8 @@ else
     rm -rf ~/.theme_selected
     cat > ~/.theme_selected << EOF
 #!/bin/bash
+THEME_GTK="$THEME_GTK"
+THEME_ICON="$THEME_ICON"
 THEME_MODE="$THEME_MODE"
 COLOR_MODE="$COLOR_MODE"
 COLOR_BACKGROUND="$COLOR_BACKGROUND"
