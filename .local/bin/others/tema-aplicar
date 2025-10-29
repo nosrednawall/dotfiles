@@ -237,7 +237,7 @@ case $1 in
         WALLPAPER_LIGHTDM="LbI3B9z.jpeg";
 
         # Cores base (originais)
-        COLOR_BACKGROUND="#073642"       # Fundo principal (azul-escuro)
+        COLOR_BACKGROUND="#002B36"       # Fundo principal (azul-escuro)
         COLOR_BACKGROUND2="#073642"      # Fundo secundário (mesmo que o principal)
         COLOR_TEXT="#839496"             # Texto principal (cinza-azulado)
         COLOR_1="#b58900"                # Amarelo
