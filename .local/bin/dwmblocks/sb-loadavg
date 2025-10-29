@@ -1,17 +1,7 @@
 #!/bin/bash
 
-# Carrega informacoes do modo de operacao
-arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
-
-if [ -f $arquivo_modo ]; then
-    source $arquivo_modo
-else
-    OPERATION_MODE="COMPLETO"
-fi
-
-# Carrega as cores do tema
-source ~/.theme_selected
-
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
 
 # Try different fan sensors
 FAN_SPEED=$(sensors | awk '/^fan|^cpu_fan/ {print $2" "$3}')
@@ -64,19 +54,31 @@ else
     usageCpu=0
 fi
 
-# Define o ícone baseado no uso do CPU
+icon=""
+
+# Define a cor do ícone baseado no uso do CPU
 if [ "$usageCpu" -le 10 ]; then
-    icon="^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^ "
+    cor_forte=$COLOR_7
+    cor_fraca=$COLOR_15
+    
 elif [ "$usageCpu" -le 40 ]; then
-    icon="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^ "
+    cor_forte=$COLOR_1
+    cor_fraca=$COLOR_9
+
 elif [ "$usageCpu" -le 60 ]; then
-    icon="^b$COLOR_2^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_10^ "
+    cor_forte=COLOR_2
+    cor_fraca=COLOR_10
+    
 elif [ "$usageCpu" -le 100 ]; then
-    icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_11^ "
+    cor_forte=COLOR_3
+    cor_fraca=COLOR_11
+    
 else
-    icon="^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^ "
+    cor_forte=COLOR_7
+    cor_fraca=COLOR_15
 fi
 
+output=$(aplicar_tema $icon $usageCpu $cor_forte $cor_fraca)
 
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
@@ -84,10 +86,10 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     "MEDIO")
-        echo "$icon$usageCpu% ^d^ "
+        echo " $output "
     ;;
     *)
-        echo "$icon$usageCpu% ^d^ "
+        echo " $output "
     ;;
 esac
 

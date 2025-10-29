@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# Carrega o tema
+source ~/.theme_selected
+theme_type="icon-color"
+
+# Carrega informacoes do modo de operacao
+arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+
+if [ -f "$arquivo_modo" ]; then
+    source "$arquivo_modo"
+else
+    OPERATION_MODE="COMPLETO"
+fi
+
+
+aplicar_tema() {
+    local icone="$1"     
+    local conteudo="$2" 
+    local cor_forte="$3"
+    local cor_fraca="$4"
+        
+    case "$theme_type" in
+        "colorfull")
+            echo "^b$cor_forte^^c$COLOR_BACKGROUND^ $icone ^d^^c$COLOR_BACKGROUND^^b$cor_fraca^ $conteudo ^d^"
+        ;;
+        "brackets")
+            echo "^c$COLOR_TEXT^[^d^^c$cor_forte^^b$COLOR_BACKGROUND^$icone^d^^b$COLOR_BACKGROUND^^c$cor_fraca^ $conteudo^d^^c$COLOR_TEXT^]"
+        ;;
+        "rounded")
+            echo "^c$COLOR_TEXT^(^d^^c$cor_forte^^b$COLOR_BACKGROUND^$icone^d^^b$COLOR_BACKGROUND^^c$cor_fraca^ $conteudo^d^^c$COLOR_TEXT^)"
+        ;;
+        "keys")
+            echo "^c$COLOR_TEXT^{^d^^c$cor_forte^^b$COLOR_BACKGROUND^$icone^d^^b$COLOR_BACKGROUND^^c$cor_fraca^ $conteudo^d^^c$COLOR_TEXT^}"
+        ;;          
+        "simple")
+            echo "^b$COLOR_BACKGROUND^^c$COLOR_TEXT^$icone $conteudo^d^"
+        ;;
+        "simple-color")
+            echo "^b$COLOR_BACKGROUND^^c$cor_forte^$icone $conteudo^d^"
+        ;;
+        "icon-color")
+            echo "^b$COLOR_BACKGROUND^^c$cor_forte^$icone^d^^b$COLOR_BACKGROUND^^c$COLOR_TEXT^ $conteudo^d^"
+        ;;                
+    esac
+}
+
+
+# Setas para direita
+# "" "" "" ""
+
+# Setas para esquerda  
+# "" "" "" ""
+
+# Versões mais finas
+# "" "" "" ""
+
+# Setas e divisores
+# "󰁔" "󰁍" "󰁑" "󰁎"  # Setas finas
+# "󰅂" "󰅀" "󰄾"        # Chevrons
+# "󰇙" "󰇚"            # Divisores
+
+# Formas geométricas
+# "󰝤" "󰝥"            # Pontos/discos
+# "󰾔" "󰾕"            # Losangos

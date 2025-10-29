@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#Icon1="🔆"	#hight
+#Icon2="🔅"	#low
+
+Level=$(cat /sys/class/backlight/acpi_video0/brightness)
+Max_lvl=$(cat /sys/class/backlight/acpi_video0/max_brightness)
+#Low="7"
+
+#if [ "$Level" -le "$Low" ] ; then
+#	echo " $Icon2 $Level/$Max_lvl "
+#else
+#	echo " $Icon1 $Level/$Max_lvl "
+#fi
+
+echo "$Level/$Max_lvl"

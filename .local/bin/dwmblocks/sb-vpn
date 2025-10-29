@@ -4,39 +4,37 @@
 ## Dá um erro bem bizzaro quando abro 2 vpns, no bloco ele para de renderizar as cores, e fica colocando os caracteres sem renderização
 ## Acho que isso ocorre porque limitei os blocos pára 80 caracteres de saída
 
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
 
-# Carrega informacoes do modo de operacao
-arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
-
-if [ -f $arquivo_modo ]; then
-    source $arquivo_modo
-else
-    OPERATION_MODE="COMPLETO"
-fi
-
-# Carrega as cores do tema
-source ~/.theme_selected
-
-status=$(ip -f inet address | grep inet | grep -E 'wg0$' -ic)
+status_wg=$(ip -f inet address | grep inet | grep -E 'wg0$' -ic)
 status_nordvpn=$(nordvpn status | grep -E "^Status: Connected$" -ic)
-status_tailscale=$(tailscale status | grep -E "Tailscale is stopped." -ic)
+#status_tailscale=$(tailscale status 2>/dev/null | grep -E "Active" -ic)
 
-if [ $status -eq 1 ]; then
-    vpn1="^b$COLOR_4^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_BACKGROUND^^b$COLOR_12^ WVPN ^d^ "
-else
-    vpn1=""
+# Array para armazenar as VPNs ativas
+vpns=()
+
+# WireGuard
+if [ $status_wg -eq 1 ]; then
+    vpns+=("$(aplicar_tema "󰢭" "WVPN" "$COLOR_4" "$COLOR_12")")
 fi
 
+# NordVPN
 if [ $status_nordvpn -eq 1 ]; then
-    vpn2="^b$COLOR_5^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_BACKGROUND^^b$COLOR_13^ NVPN ^d^ "
-else
-    vpn2=""
+    vpns+=("$(aplicar_tema "󰢭" "NVPN" "$COLOR_5" "$COLOR_13")")
 fi
 
-if [ $status_tailscale -eq 1 ]; then
-    vpn3=""
+# Tailscale - corrigida a lógica
+#if [ $status_tailscale -eq 1 ]; then
+#    vpns+=("$(aplicar_tema "󰢭" "TVPN" "$COLOR_6" "$COLOR_14")")
+#fi
+
+# Montar output baseado nas VPNs ativas
+if [ ${#vpns[@]} -eq 0 ]; then
+    output=""
 else
-    vpn3="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰢭 ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^ TVPN ^d^ "
+    # Usar printf para juntar os elementos do array corretamente
+    output=" $(printf '%s' "${vpns[@]}")"
 fi
 
 # Apresentacao condicionada
@@ -45,7 +43,8 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-        echo "$vpn1$vpn2$vpn3"
+        # Corrigido: usar $output em vez de $vpns
+        echo "$output"
     ;;
 esac
 

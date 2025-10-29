@@ -49,9 +49,17 @@ is_running "emacs" || emacs --daemon &
 #TECLADO_USA_CONECTADO=$(solaar show 521B6154 | grep "unknown (device is offline)" -ic)
 setxkbmap -model pc105 -layout br -variant abnt2
 
-# Abre o dwmblocks
+#wm_name=$(echo $DESKTOP_SESSION)
+#if [ $wm_name = openbox  ]; then
+
+    # Bar
+#    is_running "polybar" || ~/.config/polybar/launch.sh &
+#else
+    # Abre o dwmblocks
 is_running "dwmblocks" || dwmblocks &
+#fi
 
 # env | sort > /tmp/xinitrc-env.txt
 exec dwm
+# exec openbox
 # while true; do dwm 2> ~/.dwm.log; done

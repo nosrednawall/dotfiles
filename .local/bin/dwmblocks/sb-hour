@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Carrega as cores do tema
-source ~/.theme_selected
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
 
 clock=$(date '+%I')
 
@@ -21,5 +21,7 @@ case "$clock" in
 	"12") icon="󱑊" ;;
 esac
 
-echo "^b$COLOR_1^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^ $(date '+%H:%M') ^d^"
+relogio=$(aplicar_tema $icon $(date '+%H:%M') $COLOR_1 $COLOR_9)
+echo " $relogio"
+
 exit 0

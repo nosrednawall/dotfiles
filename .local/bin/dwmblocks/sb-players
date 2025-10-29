@@ -2,19 +2,8 @@
 
 PLAYER_SELECIONADO=""
 
-# Carrega informacoes do modo de operacao
-arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
-
-if [ -f "$arquivo_modo" ]; then
-    source "$arquivo_modo"
-else
-    OPERATION_MODE="COMPLETO"
-fi
-
-# Carrega as cores do tema
-if [ -f ~/.theme_selected ]; then
-    source ~/.theme_selected
-fi
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
 
 if [ -f ~/.cache/playerctl_selecionado ]; then
     source ~/.cache/playerctl_selecionado
@@ -162,71 +151,84 @@ atualizar_player_selecionado
 # Display currently playing music
 PLAYERS="--player=$PLAYER_SELECIONADO"
 
-# Ícones
+# Ícones e cores personalizadas
 case "$PLAYER_SELECIONADO" in
     "chromium.instance2")
-        icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_11^"
-        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        icon=""
         format_player="{{title}}"
+        cor_forte="$COLOR_3"
+        cor_fraca="$COLOR_11"
         ;;
 
     "mpv")
-        icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_11^"
-        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        icon=""
         format_player="{{title}}"
+        cor_forte="$COLOR_3"
+        cor_fraca="$COLOR_11"
         ;;
 
     "vlc")
-        icon="^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰕼 ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        icon="󰕼"
         format_player="{{title}}"
+        cor_forte="$COLOR_1"
+        cor_fraca="$COLOR_9"
         ;;
 
     "mpd")
-        icon="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰝚 ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^"
-        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        icon="󰝚"
         format_player="{{title}}"
+        cor_forte="$COLOR_6"
+        cor_fraca="$COLOR_14"        
         ;;
 
     "spotube.instance2")
-        icon="^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^"
-        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        icon=""
         format_player="{{title}}"
+        cor_forte="$COLOR_7"
+        cor_fraca="$COLOR_15"        
         ;;
 
     "spotify")
-        icon="^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^"
-        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        icon=""
         format_player="{{title}}"
+        cor_forte="$COLOR_7"
+        cor_fraca="$COLOR_15"                
         ;;
     *)
-        icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_11^"
-        icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
-        icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
+        icon=""
+        #icon="^b$COLOR_3^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_11^"
+        #icon_paused="^b$COLOR_1^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^"
+        #icon_close="^b#4A5947^^c$COLOR_BACKGROUND^ 󰝛 ^d^"
         format_player="{{title}}"
+        cor_forte="$COLOR_3"
+        cor_fraca="$COLOR_11"
         ;;
 esac
 
 # Verifica status
 song=""
-icon_to_use="$icon_close"
 
 if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
+
+    ## busca o status do player selecionado
     status=$(playerctl --player="$PLAYER_SELECIONADO" status 2>/dev/null)
 
-    if [ "$status" = "Playing" ] || [ "$status" = "Paused" ]; then
-        if [ "$status" = "Paused" ]; then
-            icon_to_use="$icon_paused"
-        else
-            icon_to_use="$icon"
-        fi
+    ## caso esteja como parado, muda as cores e o icone
+    if [ "$status" = "Stopped" ] || [ "$status" = "" ]; then
+        icon="󰝛"
+        cor_forte="#4A5947"
+        cor_fraca="#4A5947"
+    fi
 
+    ## Casp esteja pausado, muda as cores e o icone
+    if [ "$status" = "Paused" ]; then
+        icon=""
+        cor_forte="$COLOR_1"
+        cor_fraca="$COLOR_9"
+    fi
+
+    ## Caso esteja tocando ou pausado, busca o nome da musica
+    if [ "$status" = "Playing" ] || [ "$status" = "Paused" ]; then
         song=$(playerctl --player="$PLAYER_SELECIONADO" metadata --format="$format_player" 2>/dev/null)
 
         if [ -z "$song" ]; then
@@ -235,11 +237,14 @@ if playerctl --player="$PLAYER_SELECIONADO" status >/dev/null 2>&1; then
 
         if [ -n "$song" ]; then
             song=$(echo "$song" | tr -d ';')
-            if [ ${#song} -gt 17 ]; then
-                song="${song:0:17}..."
+            if [ ${#song} -gt 16 ]; then
+                song="${song:0:16}..."
             fi
         fi
     fi
+
+    ## Monta a saída formatada
+    output=$(aplicar_tema "$icon" "$song" "$cor_forte" "$cor_fraca")
 fi
 
 # Apresentacao condicionada
@@ -247,19 +252,8 @@ case "${OPERATION_MODE:-COMPLETO}" in
     "MINIMO")
         echo ""
         ;;
-    "MEDIO")
-        if [ -z "$song" ]; then
-            echo "$icon_close"
-        else
-            echo "$icon_to_use $song ^d^ "
-        fi
-        ;;
     *)
-        if [ -z "$song" ]; then
-            echo "$icon_close "
-        else
-            echo "$icon_to_use $song ^d^ "
-        fi
+        echo " $output "
         ;;
 esac
 

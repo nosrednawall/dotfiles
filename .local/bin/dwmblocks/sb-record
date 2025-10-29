@@ -1,5 +1,6 @@
 #!/bin/bash
-source ~/.theme_selected
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
 
 # Display an indicator during screen records.
 camera=$(lsmod | grep "uvcvideo" | awk '{print$3}' | head -1)
@@ -8,35 +9,33 @@ PID_FILE="/tmp/rec_pid"
 # Inicia a variavel de retorno
 iconCam=""
 iconRec=""
+icon=""
+output=""
 
 if [ "$camera" = "1" ]; then
 	iconCam=""
-else
-    iconCam=""
 fi
 
 # Verificar se há gravação em andamento
 if [ -f $PID_FILE ] && [ -s $PID_FILE ]; then
  	iconRec="󰑊"
-else
-    iconRec=""
 fi
 
 # Mostra o icone conforme a necessidade
 if [ ! -z $iconCam ] && [ ! -z $iconRec ]; then
-    echo "^b$COLOR_2^^c$COLOR_BACKGROUND^ $iconCam ^d^ ^b$COLOR_2^^c$COLOR_BACKGROUND^ $iconRec ^d^ "
-    exit 0
+    icon=" $iconCam $iconRec "
+else
+    if [ ! -z $iconRec ]; then
+        icon=" $iconRec "
+    else
+        icon=" $iconCam "
+    fi
 fi
 
-if [ ! -z $iconCam ]; then
-    echo "^b$COLOR_2^^c$COLOR_BACKGROUND^ $iconCam ^d^ "
-    exit 0
+## Verifica se tem algum dos dois icones preenchidos, caso sim faz a formatação da saida
+if [ ! -z $iconCam ] || [ ! -z $iconRec ]; then
+    output=$(aplicar_tema "$icon" "" "$COLOR_2" "$COLOR_2")
 fi
 
-if [ ! -z $iconRec ]; then
-    echo "^b$COLOR_2^^c$COLOR_BACKGROUND^ $iconRec ^d^ "
-    exit 0
-fi
-
-echo ""
+echo "$output"
 exit 0

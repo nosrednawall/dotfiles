@@ -1,16 +1,6 @@
 #!/bin/bash
-
-# Carrega informacoes do modo de operacao
-arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
-
-if [ -f $arquivo_modo ]; then
-    source $arquivo_modo
-else
-    OPERATION_MODE="COMPLETO"
-fi
-
-# Carrega as cores do tema
-source ~/.theme_selected
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
 
 # Display volume levels.
 case $BUTTON in
@@ -27,17 +17,24 @@ esac
 muteVol=$(pactl get-sink-mute @DEFAULT_SINK@ | grep -E 'sim|yes' -ic)
 volume=$(pactl get-sink-volume @DEFAULT_SINK@ | grep "Volume" | awk '{print$5}' | sed 's/%//')
 
+cor_forte="$COLOR_6"
+cor_fraca="$COLOR_14"
+
 if [ "$muteVol" -eq 1 ]; then
-    iconVolume="^b#4A5947^^c$COLOR_BACKGROUND^ 󰸈 ^d^"
+    iconVolume="󰸈"
+    cor_forte="#4A5947"
+    cor_fraca="#4A5947"
+
 else
     if [ "$volume" -le 30 ]; then
-        iconVolume="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰕿 ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^ $volume ^d^"
+        iconVolume="󰕿"
     elif [ "$volume" -le 60 ]; then
-        iconVolume="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰖀 ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^ $volume ^d^"
+        iconVolume="󰖀"
     elif [ "$volume" -ge 61 ]; then
-        iconVolume="^b$COLOR_6^^c$COLOR_BACKGROUND^ 󰕾 ^d^^c$COLOR_BACKGROUND^^b$COLOR_14^ $volume ^d^"
+        iconVolume="󰕾"
     fi
 fi
+output=$(aplicar_tema "$iconVolume" "$volume" "$cor_forte" "$cor_fraca")
 
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
@@ -48,7 +45,7 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-        echo "$iconVolume "
+        echo " $output "
     ;;
 esac
 

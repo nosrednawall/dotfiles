@@ -170,7 +170,7 @@ super + e
     emacsclient -c -a 'emacs'
 
 super + f
-    pcmanfm
+    thunar
 
 # =============================================
 # REINICIAR/RECARREGAR

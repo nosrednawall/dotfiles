@@ -1,22 +1,12 @@
 #!/bin/bash
 
-# Carrega informacoes do modo de operacao
-arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
 
-if [ -f $arquivo_modo ]; then
-    source $arquivo_modo
-else
-    OPERATION_MODE="COMPLETO"
-fi
-
-# Carrega as cores do tema
-source ~/.theme_selected
-
-# carrega informacoes
-# percent_used=$(df -h | grep -E '[/]$' | awk '{print$5}' | sed 's/%//')
+# Carrega o percentual usado
 percent_used=$(df -h / | awk 'NR==2 {gsub(/%/,"",$5); print $5}')
-# Saída formatada
 
+disk_usage=$(aplicar_tema "󰋊" "$percent_used" $COLOR_5 $COLOR_13)
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
     "MINIMO")
@@ -26,6 +16,6 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-    echo "^b$COLOR_5^^c$COLOR_BACKGROUND^ 󰋊 ^d^^c$COLOR_BACKGROUND^^b$COLOR_13^ $percent_used% ^d^ "
+    echo " $disk_usage "
     ;;
 esac

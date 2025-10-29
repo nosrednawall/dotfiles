@@ -1,6 +1,6 @@
 #!/bin/bash
-
-source ~/.theme_selected
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
 
 # Função para calcular a diferença de dias desde 2001-01-01 até hoje
 position() {
@@ -65,15 +65,6 @@ generate_notification() {
 # Função principal
 main() {
 
-    # Carrega informacoes do modo de operacao
-    arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
-
-    if [ -f $arquivo_modo ]; then
-        source $arquivo_modo
-    else
-        OPERATION_MODE="COMPLETO"
-    fi
-
     local pos=$(position)
     local phasename=$(phase $pos)
     #local lua_string=$(echo $phasename | awk -v color="^b$COLOR_5^^c$COLOR_BACKGROUND ^" -v d="^d^" -v color2="^c$COLOR_5^" '{print color $1 d color2" " $2 " " $3 " " d}')
@@ -81,6 +72,7 @@ main() {
     local fase=$(echo $phasename | awk '{print $2}')
     local nome=$(echo $phasename | awk '{print $3}')
 
+    local output=$(aplicar_tema "$icon" "$fase $nome" "$COLOR_2" "$COLOR_10")
 
     # Apresentacao condicionada
     case "$OPERATION_MODE" in
@@ -92,7 +84,7 @@ main() {
             ;;
         "MOSTRAR_LUA")
             # Força o uso do ponto como separador decimal
-            LC_NUMERIC=C printf "%s" "^b$COLOR_2^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_BACKGROUND^^b$COLOR_10^ $fase $nome ^d^ "
+            LC_NUMERIC=C printf "%s" " $output "
             ;;
     esac
 }

@@ -1,17 +1,7 @@
 #!/bin/bash
 
-# Carrega informacoes do modo de operacao
-arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
-
-if [ -f $arquivo_modo ]; then
-    source $arquivo_modo
-else
-    OPERATION_MODE="COMPLETO"
-fi
-
-
-# Carrega as cores do tema
-source ~/.theme_selected
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
 
 # funcoes cliclaveis
 case $BUTTON in
@@ -50,13 +40,14 @@ esac
 
 # Display RAM usage.
 memory=$(free | grep Mem | awk '{printf "%.0f\n", $3/$2 * 100.0}')
-
+output=$(aplicar_tema "" "$memory" "$COLOR_7" "b$COLOR_15")
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
     "MINIMO")
         echo ""
     ;;
     *)
-    echo "^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^ $memory% ^d^ "
+    # echo "^b$COLOR_7^^c$COLOR_BACKGROUND^  ^d^^c$COLOR_BACKGROUND^^b$COLOR_15^ $memory% ^d^ "
+        echo " $output "
     ;;
 esac

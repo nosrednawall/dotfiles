@@ -1,16 +1,7 @@
 #!/bin/bash
 
-# Carrega informacoes do modo de operacao
-arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
-
-if [ -f $arquivo_modo ]; then
-    source $arquivo_modo
-else
-    OPERATION_MODE="COMPLETO"
-fi
-
-# Carrega as cores do tema
-source ~/.theme_selected
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
 
 # Identifica os devices de rede do sistema
 DEVICE_WIFI=$(ls /sys/class/net/ | grep "wl" | awk '{print $1}')
@@ -64,9 +55,12 @@ if [ $status_wifi -eq 1 ]; then
     #wifiname=$(nmcli -t -f NAME connection show --active | grep -vE '^(Conexão cabeada 1|lo|docker0|nordlynx|tailscale0)$')
     wifiname=$(nmcli -t -f NAME,TYPE connection show --active | awk -F: '$2 == "802-11-wireless" {print $1}')
     ip=$(ip addr show $DEVICE_WIFI  | grep 'inet' | awk '{print$2}' | sed 's/\/[0-9]*//' | head -1)
-    wifi="^b$COLOR_2^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_BACKGROUND^^b$COLOR_10^ $wifiname ^d^ "
+
+    wifi=$(aplicar_tema " $icon" "$wifiname " "$COLOR_2" "$COLOR_10")
+    #wifi="^b$COLOR_2^^c$COLOR_BACKGROUND^ $icon ^d^^c$COLOR_BACKGROUND^^b$COLOR_10^ $wifiname ^d^ "
 else
-    wifi="^b#4A5947^^c$COLOR_BACKGROUND^ $icon ^d^ "
+    wifi=$(aplicar_tema " $icon" "" "#4A5947" "#4A5947")
+#    wifi="^b#4A5947^^c$COLOR_BACKGROUND^ $icon ^d^ "
 fi
 
 # Apresentacao condicionada

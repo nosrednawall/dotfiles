@@ -1,18 +1,15 @@
 #!/bin/bash
 
-# Carrega informacoes do modo de operacao
-arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
+
+# Carrega informacoes do modo de operacao do weather
 weather_modo="$HOME/.cache/dwmblocks_weather_mode"
-if [ -f $arquivo_modo ]; then
-    source $arquivo_modo
+if [ -f $weather_modo ]; then
     source $weather_modo
 else
-    OPERATION_MODE="COMPLETO"
     WEATHER_MODE="SHOW"
 fi
-
-# Carrega tema
-source ~/.theme_selected
 
 # Configurações do script
 API_KEY="8b05d62206f459e1d298cbe5844d7d87"
@@ -195,6 +192,35 @@ case $WEATHER_ICON_CODE in
         ;;
 esac
 
+# Apresentacao condicionada
+case "$OPERATION_MODE" in
+    "MINIMO")
+        echo ""
+    ;;
+    "MEDIO")
+        echo ""
+    ;;
+    *)
+        case  "$WEATHER_MODE" in
+            "SHOW")
+                output=$(aplicar_tema "$WEATHER_ICON" "$WEATHER_TEMP°C $WEATHER_DESC" "$WEATHER_HEX" "$WEATHER_HEX2")
+                echo " $output  "
+                # echo "^b$WEATHER_HEX^^c$COLOR_BACKGROUND^ $WEATHER_ICON ^d^^c$COLOR_BACKGROUND^^b$WEATHER_HEX2^ $WEATHER_TEMP°C $WEATHER_DESC ^d^ "
+            ;;
+            "HIDE")
+                output=$(aplicar_tema "$WEATHER_ICON" "$WEATHER_TEMP°C" "$WEATHER_HEX" "$WEATHER_HEX2")
+                echo " $output "
+                #                echo "^b$WEATHER_HEX^^c$COLOR_BACKGROUND^ $WEATHER_ICON ^d^^c$COLOR_BACKGROUND^^b$WEATHER_HEX2^ $WEATHER_TEMP°C ^d^ "
+            ;;
+            "*")
+                echo ""
+            ;;
+        esac
+    ;;
+esac
+
+
+
 # funcoes cliclaveis
 case $BUTTON in
     1)
@@ -251,27 +277,4 @@ EOF
 
     ;;
     6) setsid -f st -e emacs -nw "$0" ;;
-esac
-
-# Apresentacao condicionada
-case "$OPERATION_MODE" in
-    "MINIMO")
-        echo ""
-    ;;
-    "MEDIO")
-        echo ""
-    ;;
-    *)
-        case  "$WEATHER_MODE" in
-            "SHOW")
-                echo "^b$WEATHER_HEX^^c$COLOR_BACKGROUND^ $WEATHER_ICON ^d^^c$COLOR_BACKGROUND^^b$WEATHER_HEX2^ $WEATHER_TEMP°C $WEATHER_DESC ^d^ "
-            ;;
-            "HIDE")
-                echo "^b$WEATHER_HEX^^c$COLOR_BACKGROUND^ $WEATHER_ICON ^d^^c$COLOR_BACKGROUND^^b$WEATHER_HEX2^ $WEATHER_TEMP°C ^d^ "
-            ;;
-            "*")
-                echo ""
-            ;;
-        esac
-    ;;
 esac

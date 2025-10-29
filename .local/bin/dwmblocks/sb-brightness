@@ -1,27 +1,21 @@
 #!/bin/bash
 
-# Carrega informacoes do modo de operacao
-arquivo_modo="$HOME/.cache/dwmblocks_modo_operacao"
+# Carrega função para aplicar o tema e o tema de cores
+source ~/.local/bin/dwmblocks/sb-carrega-tema-dwmblocks
 
-if [ -f "$arquivo_modo" ]; then
-    source "$arquivo_modo"
-else
-    OPERATION_MODE="COMPLETO"
-fi
+## Carrega o brilho da tela
+valor_brilho=$(brightnessctl | awk '/%/ {print$4}' | cut -c 2-4 | sed 's/%//' | sed 's/)//')
 
-# Carrega o tema
-source ~/.theme_selected
+## Variaveis que serão passadas a função
+icone="󰃠"
+cor_forte=$COLOR_1
+cor_fraca=$COLOR_9
 
-temperatura=$(xrandr --verbose | awk '/Gamma/ {print $2}' | cut -d: -f3 | head -1)
-# Usando awk para comparação de floats
-if echo "$temperatura" | awk '{exit !($0 >= 1.1)}'; then
-    icone_redshift="^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰈈 ^d^"
-else
-    icone_redshift=""
-fi
+## Antigo método antes dda função
+# brilhoIcone="$icone_redshift^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰃠 ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^ $brilho ^d^"
 
-brilho=$(brightnessctl | awk '/%/ {print$4}' | cut -c 2-4 | sed 's/%//' | sed 's/)//')
-brilhoIcone="$icone_redshift^b$COLOR_1^^c$COLOR_BACKGROUND^ 󰃠 ^d^^c$COLOR_BACKGROUND^^b$COLOR_9^ $brilho ^d^"
+# Monta o retorno do dwmblocks pela função aplicar_tema
+brilhoIcone=$(aplicar_tema "$icone" "$valor_brilho" "$cor_forte" "$cor_fraca")
 
 # Apresentacao condicionada
 case "$OPERATION_MODE" in
@@ -32,7 +26,7 @@ case "$OPERATION_MODE" in
         echo ""
     ;;
     *)
-        echo "$brilhoIcone "
+        echo " $brilhoIcone "
     ;;
 esac
 
