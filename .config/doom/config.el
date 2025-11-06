@@ -83,6 +83,21 @@
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
+;; No seu init.el
+(require 'org)
+(require 'ob-python)
+
+;; Habilitar execução de código Python
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (shell . t)
+   (sql . t)))
+
+;; Configurações do Python
+(setq org-babel-python-command "python3")
+
+
 (defun +my/python-shell-auto-scroll ()
   "Mantém o scroll do buffer Python no final automaticamente."
   (when-let ((python-buffer (python-shell-get-buffer)))
