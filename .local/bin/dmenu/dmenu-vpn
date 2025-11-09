@@ -7,14 +7,6 @@ else
     casa_opcoes="Casa\n  1-Ligar"
 fi
 
-# Apenas o taiscale utiliza logica invertida, 1 para desligado, e 0 para ligado
-#status_tailscale=$(tailscale status | grep -E "Tailscale is stopped." -ic)
-#if [ "$status_tailscale" = "1" ]; then
-#    tailscale_opcoes="Tailscale\n  2-Ligar"
-#else
-#    tailscale_opcoes="Tailscale\n  2-Desligar"
-#fi
-
 status_nordvpn=$(nordvpn status | grep -E "^Status: Connected$" -ic)
 if [ "$status_nordvpn" = "1" ]; then
     nordvpn_country=$(nordvpn status | grep "Country" | sed 's/Country: //' | tr ' ' '_')
@@ -27,7 +19,7 @@ fi
 
 # Variable passed to dmenu
 #options="$casa_opcoes\n$tailscale_opcoes\n$nordvpn_opcoes"
-options="$nordvpn_opcoes"
+options="$casa_opcoes\n$nordvpn_opcoes"
 # Apresenta Dmenu
 chosen="$(echo -e "$options" | dmenu -p "Liga e desliga VPN " )"
 

@@ -43,7 +43,7 @@ is_running "dunst" || dunst -conf "$HOME/.config/dunst/themes/${THEME_MODE}_${CO
 is_running "copyq" || copyq &
 
 # Inicia o daemon do emacs se não estiver rodando
-is_running "emacs" || emacs --daemon &
+# is_running "emacs" || emacs --daemon &
 
 #is_running "solaar" || /usr/bin/solaar -w hide &
 #TECLADO_USA_CONECTADO=$(solaar show 521B6154 | grep "unknown (device is offline)" -ic)
