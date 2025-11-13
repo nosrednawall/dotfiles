@@ -269,7 +269,7 @@ case $1 in
         WALLPAPER_LIGHTDM="burst-light.png"
 
         # Cores base (originais)
-        COLOR_BACKGROUND="#fdf6e3"       # Fundo principal (bege claro)
+        COLOR_BACKGROUND="#eee8d5"       # Fundo principal (bege claro)
         COLOR_BACKGROUND2="#eee8d5"      # Fundo secundário (bege médio)
         COLOR_TEXT="#657b83"             # Texto principal (cinza-azulado escuro)
 
